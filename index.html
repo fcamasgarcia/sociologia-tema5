@@ -307,10 +307,7 @@
         </div>
 
         <div id="pdca-buttons" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <button type="button" onclick="pickPDCA('Planificar (P)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Planificar (P)</button>
-          <button type="button" onclick="pickPDCA('Hacer (D)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Hacer (D)</button>
-          <button type="button" onclick="pickPDCA('Verificar (C)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Verificar (C)</button>
-          <button type="button" onclick="pickPDCA('Actuar (A)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Actuar (A)</button>
+          <!-- Generados aleatoriamente por JS -->
         </div>
         <button type="button" onclick="resetPDCA()" class="mt-2 text-[11px] text-slate-500 underline block">Reiniciar orden</button>
 
@@ -363,16 +360,11 @@
           🛑 Reto 3: Identificación de la Norma de los Cinco Ceros
         </h3>
         <p class="text-xs text-slate-600 mb-3">
-          El Sistema de Producción Toyota persigue la máxima eficiencia mediante los <strong>Cinco Ceros</strong>. Señala la premisa ajena a este canon:
+          El Sistema Toyota (TPS / Ohno) estructura su flujo tenso en los <strong>Cinco Ceros Operativos</strong>. Identifica el principio <strong>impostor</strong> entre estas premisas de gestión:
         </p>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          <button type="button" onclick="checkFiveZeros('averias')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Averías</button>
-          <button type="button" onclick="checkFiveZeros('defectos')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Defectos</button>
-          <button type="button" onclick="checkFiveZeros('salarios')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Salarios Mínimos</button>
-          <button type="button" onclick="checkFiveZeros('retrasos')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Retrasos</button>
-          <button type="button" onclick="checkFiveZeros('stock')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Stock</button>
-          <button type="button" onclick="checkFiveZeros('papel')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Papel</button>
+        <div id="zeros-buttons-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <!-- Generados y desordenados por JS con distractores técnicos de Lean Manufacturing -->
         </div>
 
         <div id="fb-stage-3" class="hidden mt-3 p-2.5 rounded-lg text-xs font-medium"></div>
@@ -652,6 +644,7 @@
       totalErrors: 0,
       score: 10.0,
       submitted: false,
+      isSubmitting: false, // Candado estricto contra duplicación
 
       pdcaSequence: [],
       cardsStage1: { c1: false, c2: false, c3: false, c4: false },
@@ -663,6 +656,54 @@
 
     // URL exacta del Google Apps Script
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7gaBFLYHeKMMAyGB_btuVHtHgM4W4uz4sygPf4lgJLN_mbYB_UyAMPpYdiX9aDR7O/exec";
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function renderShuffledPDCA() {
+      const container = document.getElementById('pdca-buttons');
+      if (!container) return;
+      container.innerHTML = '';
+      const items = ['Planificar (P)', 'Hacer (D)', 'Verificar (C)', 'Actuar (A)'];
+      shuffleArray(items).forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => pickPDCA(item);
+        btn.className = 'p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500 hover:bg-indigo-50/50 transition';
+        btn.innerText = item;
+        container.appendChild(btn);
+      });
+    }
+
+    function renderShuffledZeros() {
+      const container = document.getElementById('zeros-buttons-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      // 5 cánones reales de Taiichi Ohno + 1 distractor técnico verosímil de Lean que NO es de los 5 ceros
+      const options = [
+        { id: 'averias', label: 'Cero Averías', impostor: false },
+        { id: 'defectos', label: 'Cero Defectos', impostor: false },
+        { id: 'retrasos', label: 'Cero Retrasos', impostor: false },
+        { id: 'stock', label: 'Cero Stock', impostor: false },
+        { id: 'papel', label: 'Cero Papel (Despilfarro burocrático)', impostor: false },
+        { id: 'subcontrata', label: 'Cero Subcontratación de Proveedores', impostor: true }
+      ];
+
+      shuffleArray(options).forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => checkFiveZeros(opt.id, opt.impostor);
+        btn.className = 'p-2.5 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 transition text-center';
+        btn.innerText = opt.label;
+        container.appendChild(btn);
+      });
+    }
 
     function startTimer() {
       state.startTime = new Date();
@@ -702,6 +743,9 @@
       document.getElementById('score-counter-badge').classList.remove('hidden');
 
       startTimer();
+
+      renderShuffledPDCA();
+      renderShuffledZeros();
 
       document.getElementById('view-onboarding').classList.add('hidden');
       document.getElementById('stage-1').classList.remove('hidden');
@@ -789,10 +833,10 @@
         document.getElementById(`slot-pdca-${i}`).innerText = '¿?';
       }
       document.getElementById('fb-stage-2').classList.add('hidden');
+      renderShuffledPDCA(); // Re-aleatorizar al reiniciar
     }
 
-    function checkFiveZeros(choice) {
-      const isImpostor = (choice === 'salarios');
+    function checkFiveZeros(choiceId, isImpostor) {
       const fb = document.getElementById('fb-stage-3');
       fb.classList.remove('hidden');
 
@@ -806,11 +850,11 @@
       if (isImpostor) {
         state.resolved.i3 = true;
         fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
-        fb.innerHTML = "✓ ¡Correcto! 'Cero salarios mínimos' no pertenece al canon toyotista (averías, defectos, retrasos, stock y papel).";
+        fb.innerHTML = "✓ ¡Correcto! El TPS se apoya precisamente en densas redes piramidales de subcontratación y proveedores auxiliares (keiretsu). Los 5 ceros son: averías, defectos, retrasos, stock y papel.";
         checkStageUnlock(3);
       } else {
         fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
-        fb.innerText = "✗ Ese principio sí forma parte de los 5 ceros. Identifica la opción espuria.";
+        fb.innerText = "✗ Principio canónico de Ohno. Recuerda que Toyota sí descentraliza producción en empresas subcontratadas vinculadas.";
       }
       calculateGrade();
     }
@@ -1022,16 +1066,18 @@
     }
 
     function submitToGoogleSheets() {
-      if (state.submitted) {
-        alert('Esta práctica ya fue enviada correctamente al profesor.');
+      // Candado estricto: evita ejecuciones simultáneas o dobles clics
+      if (state.submitted || state.isSubmitting) {
         return;
       }
+      state.isSubmitting = true;
 
       const btn = document.getElementById('btn-send-sheets');
       const btnText = document.getElementById('btn-send-text');
       const statusBox = document.getElementById('sheets-status');
 
       btn.disabled = true;
+      btn.style.pointerEvents = 'none';
       btnText.innerText = 'Enviando al registro...';
       statusBox.classList.remove('hidden');
       statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-blue-50 border border-blue-200 text-blue-800';
@@ -1085,49 +1131,70 @@
       };
 
       try {
-        // CANAL ÚNICO E INFALIBLE: Formulario invisible a través de iframe.
-        // Se ha suprimido el fetch paralelo para evitar que Google Sheets reciba dos líneas idénticas.
-        let hiddenIframe = document.getElementById('hidden_upload_frame');
-        if (!hiddenIframe) {
-          hiddenIframe = document.createElement('iframe');
-          hiddenIframe.id = 'hidden_upload_frame';
-          hiddenIframe.name = 'hidden_upload_frame';
-          hiddenIframe.style.display = 'none';
-          document.body.appendChild(hiddenIframe);
-        }
-
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = GOOGLE_SCRIPT_URL;
-        form.target = 'hidden_upload_frame';
-        form.style.display = 'none';
-
+        // Enviar exclusivamente a través de fetch con URLSearchParams en un solo disparo garantizado
+        const formDataParams = new URLSearchParams();
         for (const key in payloadData) {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = key;
-          input.value = payloadData[key];
-          form.appendChild(input);
+          formDataParams.append(key, payloadData[key]);
         }
 
-        document.body.appendChild(form);
-        form.submit();
-        
-        setTimeout(() => {
-          form.remove();
-        }, 1500);
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: formDataParams.toString()
+        }).then(() => {
+          state.submitted = true;
+          state.isSubmitting = false;
+          btnText.innerText = '✓ Práctica Registrada';
+          btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase cursor-default flex items-center justify-center gap-2';
+          statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-emerald-50 border border-emerald-200 text-emerald-800';
+          statusBox.innerText = `¡Correcto! Nota (${state.score}/10) registrada en una única fila en Google Sheets.`;
+        }).catch(() => {
+          // Si falla fetch por corte de red, recurrir al formulario de forma limpia
+          sendViaSingleForm(payloadData, btn, btnText, statusBox);
+        });
 
-        state.submitted = true;
-        btnText.innerText = '✓ Práctica Registrada';
-        btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase cursor-default flex items-center justify-center gap-2';
-        statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-emerald-50 border border-emerald-200 text-emerald-800';
-        statusBox.innerText = `¡Correcto! Nota (${state.score}/10) registrada en una única fila en Google Sheets.`;
       } catch (err) {
-        btn.disabled = false;
-        btnText.innerText = 'Reintentar Envío';
-        statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-rose-50 border border-rose-200 text-rose-800';
-        statusBox.innerText = 'Aviso: si persiste la incidencia, descarga tu comprobante en CSV.';
+        sendViaSingleForm(payloadData, btn, btnText, statusBox);
       }
+    }
+
+    function sendViaSingleForm(payloadData, btn, btnText, statusBox) {
+      let frame = document.getElementById('single_sub_iframe');
+      if (!frame) {
+        frame = document.createElement('iframe');
+        frame.id = 'single_sub_iframe';
+        frame.name = 'single_sub_iframe';
+        frame.style.display = 'none';
+        document.body.appendChild(frame);
+      }
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = GOOGLE_SCRIPT_URL;
+      form.target = 'single_sub_iframe';
+      form.style.display = 'none';
+
+      for (const k in payloadData) {
+        const inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = k;
+        inp.value = payloadData[k];
+        form.appendChild(inp);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => { form.remove(); }, 1000);
+
+      state.submitted = true;
+      state.isSubmitting = false;
+      btnText.innerText = '✓ Práctica Registrada';
+      btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase cursor-default flex items-center justify-center gap-2';
+      statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-emerald-50 border border-emerald-200 text-emerald-800';
+      statusBox.innerText = `¡Correcto! Nota (${state.score}/10) registrada en Google Sheets.`;
     }
 
     function downloadCSVReceipt() {
