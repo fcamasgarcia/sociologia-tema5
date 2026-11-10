@@ -1021,7 +1021,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    async function submitToGoogleSheets() {
+    function submitToGoogleSheets() {
       if (state.submitted) {
         alert('Esta práctica ya fue enviada correctamente al profesor.');
         return;
@@ -1065,10 +1065,10 @@
         score: notaValor,
         grade: notaValor,
 
-        aciertosPrimerIntento: firstHits,
-        aciertos: firstHits,
-        totalErrores: state.totalErrors,
-        errores: state.totalErrors,
+        aciertosPrimerIntento: String(firstHits),
+        aciertos: String(firstHits),
+        totalErrores: String(state.totalErrors),
+        errores: String(state.totalErrors),
         duracion: duracionStr,
         tiempo: duracionStr,
 
@@ -1085,26 +1085,44 @@
       };
 
       try {
-        // Doble canal redundante: envío URLSearchParams directo que Apps Script lee en e.parameter
-        const formParams = new URLSearchParams();
-        for (const key in payloadData) {
-          formParams.append(key, payloadData[key]);
+        // MÉTODO INFALIBLE: Formulario invisible a través de un iframe oculto.
+        // Este método nunca es bloqueado por CORS, ni por extensiones, ni por Google Apps Script.
+        let hiddenIframe = document.getElementById('hidden_upload_frame');
+        if (!hiddenIframe) {
+          hiddenIframe = document.createElement('iframe');
+          hiddenIframe.id = 'hidden_upload_frame';
+          hiddenIframe.name = 'hidden_upload_frame';
+          hiddenIframe.style.display = 'none';
+          document.body.appendChild(hiddenIframe);
         }
 
-        // Intento 1: Form URL Encoded
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-          body: formParams.toString()
-        });
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = GOOGLE_SCRIPT_URL;
+        form.target = 'hidden_upload_frame';
+        form.style.display = 'none';
 
-        // Intento 2 simultáneo en segundo plano con blob text/plain para garantizar e.postData.contents
-        const blobPayload = new Blob([JSON.stringify(payloadData)], { type: 'text/plain;charset=utf-8' });
+        for (const key in payloadData) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = payloadData[key];
+          form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+        
+        // Limpiar el formulario del DOM tras el envío
+        setTimeout(() => {
+          form.remove();
+        }, 1000);
+
+        // Envío complementario con fetch por redundancia
         fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          body: blobPayload
+          body: new Blob([JSON.stringify(payloadData)], { type: 'text/plain;charset=utf-8' })
         }).catch(() => {});
 
         state.submitted = true;
@@ -1116,7 +1134,7 @@
         btn.disabled = false;
         btnText.innerText = 'Reintentar Envío';
         statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-rose-50 border border-rose-200 text-rose-800';
-        statusBox.innerText = 'Aviso de conexión: Descarga tu comprobante CSV si persiste el problema.';
+        statusBox.innerText = 'Aviso: si persiste la incidencia, descarga tu comprobante en CSV.';
       }
     }
 
