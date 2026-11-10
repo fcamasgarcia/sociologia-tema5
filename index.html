@@ -35,7 +35,7 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
     .slot-box {
-      min-height: 44px;
+      min-height: 48px;
       transition: all 0.2s ease;
     }
     .badge-chip {
@@ -44,6 +44,19 @@
       transition: transform 0.1s ease, background-color 0.2s ease;
     }
     .badge-chip:active { transform: scale(0.96); }
+    .option-btn {
+      transition: all 0.2s ease;
+    }
+    .option-btn:hover {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+    .option-selected {
+      border-color: #1e40af !important;
+      background-color: #dbeafe !important;
+      color: #1e3a8a !important;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between font-sans bg-slate-50 text-slate-800">
@@ -100,10 +113,10 @@
             Misión Operaciones: De la Crisis Fordista al Toyotismo y Kalmar
           </h2>
           <p class="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed text-justify">
-            Asume la dirección estratégica en <strong>5 misiones interactivas</strong>: clasifica contratos y relaciones laborales, ordena el ciclo de mejora continua de Deming, gestiona el flujo de inventario *Just-in-Time* y audita la autonomía en la planta de Volvo.
+            Afronta <strong>5 desafíos analíticos</strong> basados en el Tema 5: segmentación de modelos según la matriz de Lipietz, control estadístico y causalidades del ciclo de Deming, gestión de vulnerabilidades del flujo <em>Just-in-Time</em> y el pacto sociolaboral de Volvo Kalmar.
           </p>
           <div class="mt-3 p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 text-left">
-            <strong>💡 Metodología:</strong> Resolverás enigmas mediante clasificación de tarjetas, diagnóstico de anomalías operativas y toma de decisiones. Puedes rectificar para avanzar, pero <strong>tu nota final premiará el primer intento</strong>.
+            <strong>💡 Evaluación Continua:</strong> Deberás resolver cada desafío conceptual para avanzar de fase. Tu calificación final se pondera estrictamente a partir de <strong>tu primer intento de respuesta</strong>.
           </div>
         </div>
 
@@ -157,8 +170,8 @@
       <div class="card-clean p-4 rounded-xl border-l-4 border-l-blue-600 flex items-center justify-between gap-3">
         <div>
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800">MISIÓN 1 DE 5</span>
-          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Colapso del Modelo Rígido y la Bifurcación</h2>
-          <p class="text-xs text-slate-600">Saturación de demanda, crisis energética y respuestas organizativas.</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">La Crisis Estructural y la Matriz de Lipietz</h2>
+          <p class="text-xs text-slate-600">Diferenciación entre flexibilidad numérica e implicación negociada.</p>
         </div>
         <div class="bg-blue-50 border border-blue-200 rounded-lg px-2.5 py-1 text-center shrink-0">
           <span class="text-[10px] font-mono text-blue-700 block uppercase">Estado</span>
@@ -168,47 +181,57 @@
 
       <div class="card-clean p-4 rounded-xl">
         <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
-          🧩 Reto Interactivo: Matriz Comparativa de Modelos
+          🧩 Reto 1: Clasificación de Parámetros Institucionales
         </h3>
         <p class="text-xs text-slate-600 mb-3">
-          Toca o haz clic en las tarjetas de abajo para asignarlas a la columna correcta según el análisis de Alain Lipietz.
+          Según Alain Lipietz, el Neofordismo y el Posfordismo responden a lógicas institucionales opuestas. Asigna cada elemento a su modelo correspondiente:
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-          <div class="p-3 bg-amber-50/50 border border-amber-200 rounded-xl">
-            <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <span>📌</span> Neofordismo (Flexibilidad Numérica)
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center justify-between">
+              <span>Modelo Flexible (Neofordismo)</span>
+              <span class="text-[10px] text-slate-400 font-normal">EE.UU. / Reino Unido</span>
             </h4>
-            <div id="drop-neofordismo" class="slot-box bg-white border-2 border-dashed border-amber-300 rounded-lg p-2 flex flex-wrap gap-1.5 min-h-[60px]">
-              <span class="text-[11px] text-slate-400 self-center mx-auto" id="ph-neo">Arrastra o pulsa tarjetas</span>
+            <div id="drop-neofordismo" class="slot-box bg-white border-2 border-dashed border-slate-300 rounded-lg p-2 flex flex-wrap gap-1.5 min-h-[55px]">
+              <span class="text-[11px] text-slate-400 self-center mx-auto" id="ph-neo">Pulsa tarjetas para asignar</span>
             </div>
           </div>
 
-          <div class="p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl">
-            <h4 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <span>🌱</span> Posfordismo (Implicación Negociada)
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center justify-between">
+              <span>Modelo Involucrado (Posfordismo)</span>
+              <span class="text-[10px] text-slate-400 font-normal">Suecia / Japón</span>
             </h4>
-            <div id="drop-posfordismo" class="slot-box bg-white border-2 border-dashed border-emerald-300 rounded-lg p-2 flex flex-wrap gap-1.5 min-h-[60px]">
-              <span class="text-[11px] text-slate-400 self-center mx-auto" id="ph-pos">Arrastra o pulsa tarjetas</span>
+            <div id="drop-posfordismo" class="slot-box bg-white border-2 border-dashed border-slate-300 rounded-lg p-2 flex flex-wrap gap-1.5 min-h-[55px]">
+              <span class="text-[11px] text-slate-400 self-center mx-auto" id="ph-pos">Pulsa tarjetas para asignar</span>
             </div>
           </div>
         </div>
 
-        <div class="p-3 bg-slate-100 rounded-xl">
-          <div class="text-[11px] font-semibold text-slate-600 mb-2">Tarjetas pendientes de clasificar:</div>
+        <div class="p-3 bg-slate-100/70 rounded-xl">
+          <div class="text-[11px] font-semibold text-slate-600 mb-2">Variables institucionales pendientes de asignación:</div>
           <div id="cards-bank-1" class="flex flex-wrap gap-2">
-            <button type="button" onclick="assignCard(1, 'c1', 'neo')" id="card-c1" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
-              Contratos flexibles y salarios bajos
-            </button>
-            <button type="button" onclick="assignCard(1, 'c2', 'pos')" id="card-c2" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
-              Redes horizontales y alta cualificación
-            </button>
-            <button type="button" onclick="assignCard(1, 'c3', 'neo')" id="card-c3" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
-              Integración vertical y control jerárquico
-            </button>
-            <button type="button" onclick="assignCard(1, 'c4', 'pos')" id="card-c4" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
-              Negociación colectiva alta y rígida
-            </button>
+            <div class="flex items-center gap-1 bg-white border border-slate-300 p-1 rounded-lg text-xs" id="card-c1">
+              <span class="text-slate-700 px-1 font-medium">Contrato flexible y legislación laboral débil</span>
+              <button type="button" onclick="assignCard(1, 'c1', 'neo')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Neo</button>
+              <button type="button" onclick="assignCard(1, 'c1', 'pos')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Pos</button>
+            </div>
+            <div class="flex items-center gap-1 bg-white border border-slate-300 p-1 rounded-lg text-xs" id="card-c2">
+              <span class="text-slate-700 px-1 font-medium">Redes horizontales y fuerza laboral altamente cualificada</span>
+              <button type="button" onclick="assignCard(1, 'c2', 'neo')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Neo</button>
+              <button type="button" onclick="assignCard(1, 'c2', 'pos')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Pos</button>
+            </div>
+            <div class="flex items-center gap-1 bg-white border border-slate-300 p-1 rounded-lg text-xs" id="card-c3">
+              <span class="text-slate-700 px-1 font-medium">Integración vertical rígida y control jerárquico directo</span>
+              <button type="button" onclick="assignCard(1, 'c3', 'neo')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Neo</button>
+              <button type="button" onclick="assignCard(1, 'c3', 'pos')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Pos</button>
+            </div>
+            <div class="flex items-center gap-1 bg-white border border-slate-300 p-1 rounded-lg text-xs" id="card-c4">
+              <span class="text-slate-700 px-1 font-medium">Negociación colectiva alta y estructurada con salarios elevados</span>
+              <button type="button" onclick="assignCard(1, 'c4', 'neo')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Neo</button>
+              <button type="button" onclick="assignCard(1, 'c4', 'pos')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 rounded text-[11px] font-bold text-slate-700">Pos</button>
+            </div>
           </div>
         </div>
 
@@ -216,22 +239,22 @@
       </div>
 
       <div class="card-clean p-4 rounded-xl border border-slate-200">
-        <span class="text-[10px] font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">Diagnóstico Causal</span>
+        <span class="text-[10px] font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">Dilema de Análisis</span>
         <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
-          ¿Cuál fue el detonante estructural que provocó la quiebra del modelo fordista en la década de 1970?
+          ¿Cuál fue la contradicción económica interna que desestabilizó el círculo virtuoso del fordismo en la década de 1970?
         </h4>
         <div class="space-y-2">
-          <button onclick="handleSingleChoice(1, 'A')" id="btn-s1-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>A)</strong> La saturación de mercados de bienes homogéneos, la rigidez técnica de las cadenas ante la demanda diversificada y el shock petrolero de 1973.
+          <button onclick="handleSingleChoice(1, 'A')" id="btn-s1-A" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>A)</strong> La saturación de los mercados de masas estandarizados y el encarecimiento de costes por rigidez técnica, incapaz de amortiguar la estanflación y las demandas de diversificación.
           </button>
-          <button onclick="handleSingleChoice(1, 'B')" id="btn-s1-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>B)</strong> La desaparición total de los sindicatos fabriles que provocó una caída voluntaria de los salarios industriales en toda Europa y EE.UU.
+          <button onclick="handleSingleChoice(1, 'B')" id="btn-s1-B" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>B)</strong> La escasez absoluta de petróleo que detuvo por completo las ventas de vehículos familiares en todas las economías occidentales sin excepción.
           </button>
-          <button onclick="handleSingleChoice(1, 'C')" id="btn-s1-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>C)</strong> La prohibición gubernamental del uso de acero y maquinaria pesada en las plantas ensambladoras de automóviles.
+          <button onclick="handleSingleChoice(1, 'C')" id="btn-s1-C" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>C)</strong> El abandono voluntario de los salarios altos por parte de las plantillas fabriles para forzar el cierre anticipado de las plantas de montaje.
           </button>
         </div>
-        <div id="fb-choice-1" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+        <div id="fb-choice-1" class="hidden mt-2 p-2.5 rounded-lg text-xs leading-relaxed"></div>
       </div>
 
       <div class="flex justify-end pt-1">
@@ -242,13 +265,13 @@
       </div>
     </div>
 
-    <!-- MISIÓN 2: EDWARDS DEMING Y EL CICLO PDCA -->
+    <!-- MISIÓN 2: EDWARDS DEMING, SPC Y EL CICLO DE MEJORA -->
     <div id="stage-2" class="hidden space-y-4">
       <div class="card-clean p-4 rounded-xl border-l-4 border-l-indigo-600 flex items-center justify-between gap-3">
         <div>
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">MISIÓN 2 DE 5</span>
-          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Enigma de Edwards Deming en Japón (1950)</h2>
-          <p class="text-xs text-slate-600">Control Estadístico de Procesos (SPC) y la cultura de calidad.</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Control Estadístico y la Filosofía de Deming</h2>
+          <p class="text-xs text-slate-600">Reconstrucción industrial japonesa y gestión científica de la variabilidad.</p>
         </div>
         <div class="bg-indigo-50 border border-indigo-200 rounded-lg px-2.5 py-1 text-center shrink-0">
           <span class="text-[10px] font-mono text-indigo-700 block uppercase">Estado</span>
@@ -258,36 +281,36 @@
 
       <div class="card-clean p-4 rounded-xl">
         <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
-          🔄 Reto Interactivo: Ordenar la Rueda de Mejora Continua (PDCA)
+          🔄 Reto 2: Secuencia Metodológica del Ciclo de Deming
         </h3>
         <p class="text-xs text-slate-600 mb-3">
-          Deming transformó la industria japonesa enseñando que la calidad es un ciclo continuo. Haz clic en las fases en su orden exacto:
+          Ordena los pasos del ciclo sistemático de calidad sin saltarte la jerarquía de retroalimentación:
         </p>
 
         <div class="grid grid-cols-4 gap-2 mb-3 text-center">
           <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
-            <span class="text-[10px] text-slate-400 block font-mono">Paso 1</span>
+            <span class="text-[10px] text-slate-400 block font-mono">Fase 1</span>
             <span id="slot-pdca-1" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
           </div>
           <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
-            <span class="text-[10px] text-slate-400 block font-mono">Paso 2</span>
+            <span class="text-[10px] text-slate-400 block font-mono">Fase 2</span>
             <span id="slot-pdca-2" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
           </div>
           <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
-            <span class="text-[10px] text-slate-400 block font-mono">Paso 3</span>
+            <span class="text-[10px] text-slate-400 block font-mono">Fase 3</span>
             <span id="slot-pdca-3" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
           </div>
           <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
-            <span class="text-[10px] text-slate-400 block font-mono">Paso 4</span>
+            <span class="text-[10px] text-slate-400 block font-mono">Fase 4</span>
             <span id="slot-pdca-4" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
           </div>
         </div>
 
         <div id="pdca-buttons" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <button type="button" onclick="pickPDCA('Planificar (P)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">1. Planificar (P)</button>
-          <button type="button" onclick="pickPDCA('Hacer (D)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">2. Hacer (D)</button>
-          <button type="button" onclick="pickPDCA('Verificar (C)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">3. Verificar (C)</button>
-          <button type="button" onclick="pickPDCA('Actuar (A)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">4. Actuar (A)</button>
+          <button type="button" onclick="pickPDCA('Planificar (P)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Planificar (P)</button>
+          <button type="button" onclick="pickPDCA('Hacer (D)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Hacer (D)</button>
+          <button type="button" onclick="pickPDCA('Verificar (C)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Verificar (C)</button>
+          <button type="button" onclick="pickPDCA('Actuar (A)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">Actuar (A)</button>
         </div>
         <button type="button" onclick="resetPDCA()" class="mt-2 text-[11px] text-slate-500 underline block">Reiniciar orden</button>
 
@@ -295,22 +318,22 @@
       </div>
 
       <div class="card-clean p-4 rounded-xl border border-slate-200">
-        <span class="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Tesis Central de Deming</span>
+        <span class="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Dilema de Análisis</span>
         <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
-          ¿Sobre quién depositó Deming la verdadera responsabilidad de los defectos en la producción industrial?
+          En el Statistical Process Control (SPC) de Deming, ¿cuál es el error directivo más común respecto a la variabilidad?
         </h4>
         <div class="space-y-2">
-          <button onclick="handleSingleChoice(2, 'A')" id="btn-s2-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>A)</strong> En la falta de disciplina y escasa fuerza física de los obreros de la línea de ensamblaje.
+          <button onclick="handleSingleChoice(2, 'A')" id="btn-s2-A" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>A)</strong> Culpabilizar a los operarios individuales por variaciones comunes inherentes al diseño del sistema productivo, en vez de intervenir sobre la estructura técnica.
           </button>
-          <button onclick="handleSingleChoice(2, 'B')" id="btn-s2-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>B)</strong> En la dirección y la gestión del sistema, causantes del 85-90% de los fallos por falta de métodos y liderazgo.
+          <button onclick="handleSingleChoice(2, 'B')" id="btn-s2-B" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>B)</strong> Establecer descansos excesivos para los mandos intermedios impidiendo que revisen las anotaciones de mantenimiento en fábrica.
           </button>
-          <button onclick="handleSingleChoice(2, 'C')" id="btn-s2-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>C)</strong> En las aduanas internacionales que importaban materias primas defectuosas sin avisar a los ingenieros.
+          <button onclick="handleSingleChoice(2, 'C')" id="btn-s2-C" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>C)</strong> Reducir la inversión en maquinaria pesada con el único objetivo de aumentar los dividendos a corto plazo de los accionistas.
           </button>
         </div>
-        <div id="fb-choice-2" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+        <div id="fb-choice-2" class="hidden mt-2 p-2.5 rounded-lg text-xs leading-relaxed"></div>
       </div>
 
       <div class="flex justify-end pt-1">
@@ -321,13 +344,13 @@
       </div>
     </div>
 
-    <!-- MISIÓN 3: EL TOYOTISMO, JUST-IN-TIME Y LOS 5 CEROS -->
+    <!-- MISIÓN 3: TOYOTISMO, JUST-IN-TIME Y GESTIÓN DE VULNERABILIDADES -->
     <div id="stage-3" class="hidden space-y-4">
       <div class="card-clean p-4 rounded-xl border-l-4 border-l-rose-500 flex items-center justify-between gap-3">
         <div>
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-rose-100 text-rose-800">MISIÓN 3 DE 5</span>
-          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Sistema Toyota (TPS) y la Revolución del JIT</h2>
-          <p class="text-xs text-slate-600">Taiichi Ohno, producción bajo demanda (*pull*) y la regla de los cinco ceros.</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Toyotismo y la Regulación de Flujos JIT</h2>
+          <p class="text-xs text-slate-600">Taiichi Ohno, eliminación de stocks y disciplina operativa.</p>
         </div>
         <div class="bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1 text-center shrink-0">
           <span class="text-[10px] font-mono text-rose-700 block uppercase">Estado</span>
@@ -337,16 +360,16 @@
 
       <div class="card-clean p-4 rounded-xl">
         <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
-          🛑 Reto Interactivo: El Filtro de la Calidad Total (Los Cinco Ceros)
+          🛑 Reto 3: Identificación de la Norma de los Cinco Ceros
         </h3>
         <p class="text-xs text-slate-600 mb-3">
-          El sistema Just-In-Time se fundamenta en la teoría de los <strong>Cinco Ceros</strong>. Señala cuál de las siguientes opciones NO forma parte de los 5 ceros del Toyotismo:
+          El Sistema de Producción Toyota persigue la máxima eficiencia mediante los <strong>Cinco Ceros</strong>. Señala la premisa ajena a este canon:
         </p>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <button type="button" onclick="checkFiveZeros('averias')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Averías</button>
           <button type="button" onclick="checkFiveZeros('defectos')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Defectos</button>
-          <button type="button" onclick="checkFiveZeros('salarios')" class="p-2 border-2 border-dashed border-rose-300 rounded-lg text-xs font-bold text-rose-800 bg-rose-50/50 hover:bg-rose-100">Cero Salarios Mínimos</button>
+          <button type="button" onclick="checkFiveZeros('salarios')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Salarios Mínimos</button>
           <button type="button" onclick="checkFiveZeros('retrasos')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Retrasos</button>
           <button type="button" onclick="checkFiveZeros('stock')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Stock</button>
           <button type="button" onclick="checkFiveZeros('papel')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Papel</button>
@@ -356,22 +379,22 @@
       </div>
 
       <div class="card-clean p-4 rounded-xl border border-slate-200">
-        <span class="text-[10px] font-mono font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded">Lógica Operativa</span>
+        <span class="text-[10px] font-mono font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded">Dilema de Análisis</span>
         <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
-          ¿En qué se inspiró Taiichi Ohno para sustituir el modelo de empuje (*push*) por el de arrastre (*pull*) en Toyota?
+          ¿Cuál es la principal vulnerabilidad sociotécnica que genera el modelo Just-in-Time en las cadenas de aprovisionamiento?
         </h4>
         <div class="space-y-2">
-          <button onclick="handleSingleChoice(3, 'A')" id="btn-s3-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>A)</strong> En la observación de los supermercados estadounidenses, donde las estanterías solo se reponen a medida que el cliente retira el producto.
+          <button onclick="handleSingleChoice(3, 'A')" id="btn-s3-A" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>A)</strong> La ausencia de inventarios de reserva transmite cualquier retraso o huelga de proveedores inmediatamente a toda la línea, exigiendo una altísima corresponsabilidad.
           </button>
-          <button onclick="handleSingleChoice(3, 'B')" id="btn-s3-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>B)</strong> En las fábricas textiles soviéticas de producción masiva de uniformes militares sin variación de talla.
+          <button onclick="handleSingleChoice(3, 'B')" id="btn-s3-B" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>B)</strong> La imposibilidad física de fabricar automóviles en más de un color de chasis a causa del sistema Kanban.
           </button>
-          <button onclick="handleSingleChoice(3, 'C')" id="btn-s3-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>C)</strong> En las líneas de montaje de Henry Ford de 1914 con acumulación masiva de chasis en almacenes exteriores.
+          <button onclick="handleSingleChoice(3, 'C')" id="btn-s3-C" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>C)</strong> El colapso del sistema informático cuando los pedidos de los concesionarios se tramitan mediante contratos por escrito.
           </button>
         </div>
-        <div id="fb-choice-3" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+        <div id="fb-choice-3" class="hidden mt-2 p-2.5 rounded-lg text-xs leading-relaxed"></div>
       </div>
 
       <div class="flex justify-end pt-1">
@@ -386,9 +409,9 @@
     <div id="stage-4" class="hidden space-y-4">
       <div class="card-clean p-4 rounded-xl border-l-4 border-l-amber-500 flex items-center justify-between gap-3">
         <div>
-          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-100 text-amber-800">MISIÓN 4 DE 5</span>
-          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Kalmarismo Sueco: La Alternativa de Volvo</h2>
-          <p class="text-xs text-slate-600">Equipos autónomos, bienestar colectivo y crítica a la cadena tradicional.</p>
+          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-100 text-amber-800">SALA 4 DE 5</span>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Kalmarismo de Volvo y la Autonomía Laboral</h2>
+          <p class="text-xs text-slate-600">Reorganización ergonómica y el modelo socialdemócrata.</p>
         </div>
         <div class="bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1 text-center shrink-0">
           <span class="text-[10px] font-mono text-amber-700 block uppercase">Estado</span>
@@ -398,28 +421,28 @@
 
       <div class="card-clean p-4 rounded-xl">
         <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
-          🇸🇪 Reto Interactivo: Auditoría a la Planta de Volvo en Kalmar (1974)
+          🇸🇪 Reto 4: Verificación de Criterios del Modelo Kalmar
         </h3>
         <p class="text-xs text-slate-600 mb-3">
-          ¿Cuáles son los tres pilares sociolaborales que distinguieron a la factoría de Kalmar frente a la cadena fordista?
+          Señala los <strong>tres rasgos sociológicos reales</strong> del experimento de Volvo en Kalmar (1974) descartando la opción contradictoria:
         </p>
 
         <div class="space-y-2">
           <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
             <input type="checkbox" id="chk-k1" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
-            <span>Equipos autónomos de trabajo con rotación de funciones y mayor control sobre los ritmos.</span>
+            <span>Equipos autónomos con rotación voluntaria de funciones y control colectivo del ritmo.</span>
           </label>
           <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
             <input type="checkbox" id="chk-k2" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
-            <span>Contratación temporal masiva con despidos libres sin intervención sindical.</span>
+            <span>Contratación por horas con despidos sin preaviso para amortiguar caídas de demanda.</span>
           </label>
           <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
             <input type="checkbox" id="chk-k3" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
-            <span>Alta rigidez laboral, protección del empleo y diálogo continuo bajo marco socialdemócrata.</span>
+            <span>Alta estabilidad laboral respaldada por un marco de concertación socialdemócrata.</span>
           </label>
           <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
             <input type="checkbox" id="chk-k4" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
-            <span>Diseño de instalaciones enfocado en reducir la fatiga física y favorecer la comunicación social.</span>
+            <span>Diseño arquitectónico con carros filoguiados para favorecer la interacción social y reducir la monotonía.</span>
           </label>
         </div>
 
@@ -427,22 +450,22 @@
       </div>
 
       <div class="card-clean p-4 rounded-xl border border-slate-200">
-        <span class="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Límites y Críticas</span>
+        <span class="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Dilema de Análisis</span>
         <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
-          ¿Por qué sociólogos como Henri Mendras señalaron que el Kalmarismo era un modelo de difícil exportación a otros países?
+          ¿Por qué el sociólogo Henri Mendras definió el Kalmarismo como un modelo "demasiado sueco" difícilmente generalizable?
         </h4>
         <div class="space-y-2">
-          <button onclick="handleSingleChoice(4, 'A')" id="btn-s4-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>A)</strong> Porque requería un contexto cultural y un pacto socialdemócrata muy específico de alta confianza mutua entre sindicatos, empresas y Estado.
+          <button onclick="handleSingleChoice(4, 'A')" id="btn-s4-A" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>A)</strong> Porque la implicación negociada y la rigidez protectora exigen un nivel de confianza institucional y capital social que pocos países poseen.
           </button>
-          <button onclick="handleSingleChoice(4, 'B')" id="btn-s4-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>B)</strong> Porque los automóviles fabricados con equipos autónomos eran incapaces de circular con lluvia o nieve.
+          <button onclick="handleSingleChoice(4, 'B')" id="btn-s4-B" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>B)</strong> Porque los costes de calefacción de la factoría en el invierno escandinavo superaban el beneficio por unidad ensamblada.
           </button>
-          <button onclick="handleSingleChoice(4, 'C')" id="btn-s4-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>C)</strong> Porque la Unión Europea aprobó una directiva que prohibía expresamente la rotación de puestos en el sector del motor.
+          <button onclick="handleSingleChoice(4, 'C')" id="btn-s4-C" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>C)</strong> Porque la dirección de Volvo fue obligada por el parlamento a sustituir todos sus proveedores por cooperativas agrarias locales.
           </button>
         </div>
-        <div id="fb-choice-4" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+        <div id="fb-choice-4" class="hidden mt-2 p-2.5 rounded-lg text-xs leading-relaxed"></div>
       </div>
 
       <div class="flex justify-end pt-1">
@@ -453,13 +476,13 @@
       </div>
     </div>
 
-    <!-- MISIÓN 5: SÍNTESIS COMPARADA Y DILEMA DIRECTIVO -->
+    <!-- MISIÓN 5: SÍNTESIS COMPARADA Y RAÍCES HISTÓRICAS -->
     <div id="stage-5" class="hidden space-y-4">
       <div class="card-clean p-4 rounded-xl border-l-4 border-l-emerald-600 flex items-center justify-between gap-3">
         <div>
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">MISIÓN 5 DE 5</span>
-          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">Diagnóstico Final de Modelos Productivos</h2>
-          <p class="text-xs text-slate-600">Integración de los paradigmas industriales y su impacto sociológico.</p>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">Diagnóstico Geopolítico y Cultural</h2>
+          <p class="text-xs text-slate-600">Reconstrucción de posguerra, disolución de zaibatsus y monozukuri.</p>
         </div>
         <div class="bg-emerald-50 border border-emerald-200 rounded-lg px-2.5 py-1 text-center shrink-0">
           <span class="text-[10px] font-mono text-emerald-700 block uppercase">Estado</span>
@@ -469,31 +492,31 @@
 
       <div class="card-clean p-4 rounded-xl">
         <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
-          🎯 Reto Interactivo: Asignación de Caso a Paradigma Productivo
+          🎯 Reto 5: Asignación Estructural de Casos
         </h3>
         <p class="text-xs text-slate-600 mb-3">
-          Relaciona cada descripción con su modelo exacto:
+          Determina con exactitud el régimen productivo que encarna cada una de las dos situaciones:
         </p>
 
         <div class="space-y-3">
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
             <span class="text-xs font-semibold text-slate-800 block mb-1.5">
-              1. "Planta automotriz en EE.UU. que ante crisis flexibiliza despidos, usa contratos precarios y mantiene mando vertical rígido."
+              1. "Organización fabril que busca abaratar costes recurriendo a contratos de corta duración y debilitamiento sindical, reteniendo una cadena de mando vertical."
             </span>
             <div class="grid grid-cols-3 gap-2">
               <button type="button" onclick="assignFinalModel(1, 'Fordismo')" id="btn-fin-1-Fordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Fordismo</button>
-              <button type="button" onclick="assignFinalModel(1, 'Neofordismo')" id="btn-fin-1-Neofordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white font-bold text-blue-800">Neofordismo</button>
+              <button type="button" onclick="assignFinalModel(1, 'Neofordismo')" id="btn-fin-1-Neofordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Neofordismo</button>
               <button type="button" onclick="assignFinalModel(1, 'Toyotismo')" id="btn-fin-1-Toyotismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Toyotismo</button>
             </div>
           </div>
 
           <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
             <span class="text-xs font-semibold text-slate-800 block mb-1.5">
-              2. "Fábrica nipona con producción build-to-order, alianzas de largo plazo con proveedores, círculos de calidad Kaizen y cero inventario."
+              2. "Sistema basado en acuerdos estables con una red jerarquizada de proveedores, paradas automáticas de línea por defectos (Jidoka) y eliminación metódica del despilfarro."
             </span>
             <div class="grid grid-cols-3 gap-2">
               <button type="button" onclick="assignFinalModel(2, 'Kalmarismo')" id="btn-fin-2-Kalmarismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Kalmarismo</button>
-              <button type="button" onclick="assignFinalModel(2, 'Toyotismo')" id="btn-fin-2-Toyotismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white font-bold text-blue-800">Toyotismo</button>
+              <button type="button" onclick="assignFinalModel(2, 'Toyotismo')" id="btn-fin-2-Toyotismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Toyotismo</button>
               <button type="button" onclick="assignFinalModel(2, 'Neofordismo')" id="btn-fin-2-Neofordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Neofordismo</button>
             </div>
           </div>
@@ -503,22 +526,22 @@
       </div>
 
       <div class="card-clean p-4 rounded-xl border border-slate-200">
-        <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Cultura Monozukuri</span>
+        <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Dilema de Análisis</span>
         <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
-          En la sociología de la empresa japonesa, ¿qué significa la filosofía milenaria del <em>Monozukuri</em> aplicada a la manufactura?
+          Además de los métodos estadísticos de Deming, ¿qué factor geopolítico aceleró decisivamente la modernización fabril japonesa entre 1950 y 1953?
         </h4>
         <div class="space-y-2">
-          <button onclick="handleSingleChoice(5, 'A')" id="btn-s5-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>A)</strong> La obligación legal de sustituir a los ingenieros por robots inteligentes para evitar la interacción humana en el taller.
+          <button onclick="handleSingleChoice(5, 'A')" id="btn-s5-A" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>A)</strong> La demanda logística de munición y aprovisionamiento militar derivada de la Guerra de Corea, con bases y contratos directos del ejército de EE.UU.
           </button>
-          <button onclick="handleSingleChoice(5, 'B')" id="btn-s5-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>B)</strong> La actitud sincera y el orgullo por el trabajo bien hecho, combinando destreza artesanal, cuidado por los detalles y mejora continua.
+          <button onclick="handleSingleChoice(5, 'B')" id="btn-s5-B" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>B)</strong> La firma de una alianza aduanera exclusiva con la Unión Soviética para la exportación de telares de seda mecánicos.
           </button>
-          <button onclick="handleSingleChoice(5, 'C')" id="btn-s5-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
-            <strong>C)</strong> Una doctrina salarial que estipula que los directivos deben cobrar el mismo sueldo que el operario de menor rango.
+          <button onclick="handleSingleChoice(5, 'C')" id="btn-s5-C" class="option-btn w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left">
+            <strong>C)</strong> El descubrimiento de grandes reservas petrolíferas en la bahía de Tokio que abarataron toda la energía industrial del país.
           </button>
         </div>
-        <div id="fb-choice-5" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+        <div id="fb-choice-5" class="hidden mt-2 p-2.5 rounded-lg text-xs leading-relaxed"></div>
       </div>
 
       <div class="flex justify-end pt-1">
@@ -635,9 +658,10 @@
       finalModels: { m1: null, m2: null }
     };
 
-    const CORRECT_DILEMMAS = { 1: 'A', 2: 'B', 3: 'A', 4: 'A', 5: 'B' };
+    // Respuestas correctas a dilemas
+    const CORRECT_DILEMMAS = { 1: 'A', 2: 'A', 3: 'A', 4: 'A', 5: 'A' };
 
-    // ENLACE CONECTADO DIRECTAMENTE A TU GOOGLE APPS SCRIPT
+    // URL exacta del Google Apps Script
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7gaBFLYHeKMMAyGB_btuVHtHgM4W4uz4sygPf4lgJLN_mbYB_UyAMPpYdiX9aDR7O/exec";
 
     function startTimer() {
@@ -694,7 +718,9 @@
 
       if (state.firstAttempts.interactive1 === null) {
         state.firstAttempts.interactive1 = isCorrect;
-        if (!isCorrect) state.totalErrors++;
+      }
+      if (!isCorrect) {
+        state.totalErrors++;
       }
 
       if (isCorrect) {
@@ -702,8 +728,8 @@
         const ph = target === 'neo' ? document.getElementById('ph-neo') : document.getElementById('ph-pos');
         if (ph) ph.remove();
 
-        cardEl.className = "text-xs bg-emerald-100 text-emerald-900 border border-emerald-300 px-2 py-1 rounded font-medium cursor-default";
-        cardEl.onclick = null;
+        cardEl.className = "text-xs bg-slate-100 text-slate-800 border border-slate-300 px-2 py-1 rounded font-medium cursor-default";
+        cardEl.innerHTML = `<span class="text-blue-800 font-bold mr-1">✓</span> ` + cardEl.querySelector('span').innerText;
         destBox.appendChild(cardEl);
         state.cardsStage1[cardId] = true;
 
@@ -712,15 +738,14 @@
           const fb = document.getElementById('fb-stage-1');
           fb.classList.remove('hidden');
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
-          fb.innerText = "✓ ¡Excelente! Matriz de Lipietz clasificada con rigor.";
+          fb.innerText = "✓ ¡Clasificación institucional completada! Responde el dilema inferior para abrir el candado.";
           checkStageUnlock(1);
         }
       } else {
-        state.totalErrors++;
         const fb = document.getElementById('fb-stage-1');
         fb.classList.remove('hidden');
         fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
-        fb.innerText = "✗ Esa tarjeta corresponde a la otra categoría. Revisa las características.";
+        fb.innerText = "✗ Asignación errónea: contrasta la lógica de desregulación numérica frente a la implicación cualificada.";
       }
       calculateGrade();
     }
@@ -737,7 +762,9 @@
 
         if (state.firstAttempts.interactive2 === null) {
           state.firstAttempts.interactive2 = isOk;
-          if (!isOk) state.totalErrors++;
+        }
+        if (!isOk) {
+          state.totalErrors++;
         }
 
         const fb = document.getElementById('fb-stage-2');
@@ -746,12 +773,11 @@
         if (isOk) {
           state.resolved.i2 = true;
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
-          fb.innerText = "✓ ¡Secuencia PDCA correcta! Plan -> Do -> Check -> Act es la base de la mejora continua.";
+          fb.innerText = "✓ ¡Secuencia PDCA exacta! Resuelve el dilema sobre variabilidad para desbloquear la fase.";
           checkStageUnlock(2);
         } else {
-          state.totalErrors++;
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
-          fb.innerText = "✗ Orden incorrecto. Pulsa 'Reiniciar orden' para volver a intentarlo.";
+          fb.innerText = "✗ Secuencia desordenada. Recuerda que no se actúa antes de comprobar la verificación estadística.";
         }
         calculateGrade();
       }
@@ -772,18 +798,19 @@
 
       if (state.firstAttempts.interactive3 === null) {
         state.firstAttempts.interactive3 = isImpostor;
-        if (!isImpostor) state.totalErrors++;
+      }
+      if (!isImpostor) {
+        state.totalErrors++;
       }
 
       if (isImpostor) {
         state.resolved.i3 = true;
         fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
-        fb.innerHTML = "✓ ¡Correcto! 'Cero Salarios Mínimos' NO pertenece a los 5 ceros. Los 5 ceros son: cero averías, defectos, retrasos, stock y papel.";
+        fb.innerHTML = "✓ ¡Correcto! 'Cero salarios mínimos' no pertenece al canon toyotista (averías, defectos, retrasos, stock y papel).";
         checkStageUnlock(3);
       } else {
-        state.totalErrors++;
         fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
-        fb.innerText = "✗ Ese sí es uno de los 5 ceros del Toyotismo. Busca el elemento impostor.";
+        fb.innerText = "✗ Ese principio sí forma parte de los 5 ceros. Identifica la opción espuria.";
       }
       calculateGrade();
     }
@@ -797,22 +824,21 @@
       const fb = document.getElementById('fb-stage-4');
       const isCorrect = (k1 && !k2 && k3 && k4);
 
-      if (k1 && k3 && k4) {
-        if (state.firstAttempts.interactive4 === null) {
+      if ((k1 || k2 || k3 || k4)) {
+        if (state.firstAttempts.interactive4 === null && (k1 && k3 && k4)) {
           state.firstAttempts.interactive4 = isCorrect;
-          if (!isCorrect) state.totalErrors++;
         }
 
         fb.classList.remove('hidden');
-        if (!k2) {
+        if (isCorrect) {
           state.resolved.i4 = true;
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
-          fb.innerText = "✓ ¡Diagnóstico perfecto! El modelo sueco priorizó equipos autónomos, alta protección laboral y diseño ergonómico.";
+          fb.innerText = "✓ ¡Criterios comprobados! Has descartado la desregulación precarizadora que no encaja en Kalmar.";
           checkStageUnlock(4);
         } else {
-          state.totalErrors++;
+          if (k2) state.totalErrors++;
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
-          fb.innerText = "✗ Cuidado: La precariedad y los despidos libres pertenecen al neofordismo, no al modelo de Kalmar.";
+          fb.innerText = "✗ Selección incompleta o errónea. El Kalmarismo jamás adoptó la desregulación de despidos neofordista.";
         }
         calculateGrade();
       }
@@ -826,7 +852,7 @@
         if (btn) btn.className = "p-2 border border-slate-200 rounded-lg text-xs bg-white";
       });
       const act = document.getElementById(`btn-fin-${caseNum}-${modelChosen}`);
-      if (act) act.className = "p-2 border-2 border-blue-600 rounded-lg text-xs bg-blue-50 font-bold text-blue-900";
+      if (act) act.className = "p-2 border-2 border-blue-800 rounded-lg text-xs bg-blue-50 font-bold text-blue-900";
 
       const ok1 = (state.finalModels.m1 === 'Neofordismo');
       const ok2 = (state.finalModels.m2 === 'Toyotismo');
@@ -835,7 +861,9 @@
         const bothOk = (ok1 && ok2);
         if (state.firstAttempts.interactive5 === null) {
           state.firstAttempts.interactive5 = bothOk;
-          if (!bothOk) state.totalErrors++;
+        }
+        if (!bothOk) {
+          state.totalErrors++;
         }
 
         const fb = document.getElementById('fb-stage-5');
@@ -844,12 +872,11 @@
         if (bothOk) {
           state.resolved.i5 = true;
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
-          fb.innerText = "✓ ¡Ambos casos identificados con éxito!";
+          fb.innerText = "✓ ¡Modelos asignados correctamente según sus características distintivas!";
           checkStageUnlock(5);
         } else {
-          state.totalErrors++;
           fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
-          fb.innerText = "✗ Uno de los modelos no coincide con el caso descrito. Revisa las opciones.";
+          fb.innerText = "✗ Uno de los modelos no se ajusta al enunciado. Contrasta flexibilidad numérica frente a Jidoka.";
         }
         calculateGrade();
       }
@@ -861,16 +888,18 @@
 
       if (state.firstAttempts[key] === null) {
         state.firstAttempts[key] = option;
-        if (!isCorrect) state.totalErrors++;
+      }
+      if (!isCorrect) {
+        state.totalErrors++;
       }
 
       ['A', 'B', 'C'].forEach(opt => {
         const b = document.getElementById(`btn-s${stageNum}-${opt}`);
-        if (b) b.classList.remove('bg-blue-50', 'border-blue-600', 'text-blue-900', 'font-semibold');
+        if (b) b.classList.remove('option-selected');
       });
 
       const btn = document.getElementById(`btn-s${stageNum}-${option}`);
-      if (btn) btn.classList.add('bg-blue-50', 'border-blue-600', 'text-blue-900', 'font-semibold');
+      if (btn) btn.classList.add('option-selected');
 
       const fb = document.getElementById(`fb-choice-${stageNum}`);
       fb.classList.remove('hidden');
@@ -878,12 +907,11 @@
       if (isCorrect) {
         state.resolved['d' + stageNum] = true;
         fb.className = "mt-2 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-900";
-        fb.innerHTML = "<strong class='text-emerald-700'>✓ ¡Correcto!</strong> Razonamiento sociológico exacto.";
+        fb.innerHTML = "<strong class='text-emerald-700'>✓ ¡Correcto!</strong> Diagnóstico analítico riguroso.";
         checkStageUnlock(stageNum);
       } else {
-        state.totalErrors++;
         fb.className = "mt-2 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-900";
-        fb.innerHTML = "<strong class='text-rose-700'>✗ Incorrecto.</strong> Esa opción no se corresponde con las tesis del modelo.";
+        fb.innerHTML = "<strong class='text-rose-700'>✗ Incorrecto.</strong> Esa alternativa elude los mecanismos estructurales del caso.";
       }
       calculateGrade();
     }
@@ -1033,7 +1061,9 @@
         notaFinal: notaValor,
         nota_final: notaValor,
         calificacion: notaValor,
+        puntuacion: notaValor,
         score: notaValor,
+        grade: notaValor,
 
         aciertosPrimerIntento: firstHits,
         aciertos: firstHits,
@@ -1055,24 +1085,38 @@
       };
 
       try {
-        const blobPayload = new Blob([JSON.stringify(payloadData)], { type: 'text/plain;charset=utf-8' });
+        // Doble canal redundante: envío URLSearchParams directo que Apps Script lee en e.parameter
+        const formParams = new URLSearchParams();
+        for (const key in payloadData) {
+          formParams.append(key, payloadData[key]);
+        }
 
+        // Intento 1: Form URL Encoded
         await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          body: blobPayload
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body: formParams.toString()
         });
+
+        // Intento 2 simultáneo en segundo plano con blob text/plain para garantizar e.postData.contents
+        const blobPayload = new Blob([JSON.stringify(payloadData)], { type: 'text/plain;charset=utf-8' });
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: blobPayload
+        }).catch(() => {});
 
         state.submitted = true;
         btnText.innerText = '✓ Práctica Registrada';
         btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase cursor-default flex items-center justify-center gap-2';
         statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-emerald-50 border border-emerald-200 text-emerald-800';
-        statusBox.innerText = `¡Correcto! Nota (${state.score}/10) y respuestas del Tema 5 enviadas al Google Sheet. Descarga tu comprobante CSV.`;
+        statusBox.innerText = `¡Correcto! Nota (${state.score}/10) y respuestas del Tema 5 registradas con éxito en Google Sheets.`;
       } catch (err) {
         btn.disabled = false;
         btnText.innerText = 'Reintentar Envío';
         statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-rose-50 border border-rose-200 text-rose-800';
-        statusBox.innerText = 'Aviso: No se pudo conectar de forma directa con Google Sheets. Descarga tu comprobante CSV.';
+        statusBox.innerText = 'Aviso de conexión: Descarga tu comprobante CSV si persiste el problema.';
       }
     }
 
