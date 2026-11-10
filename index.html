@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Práctica Interactiva T5: Modelos Productivos Contemporáneos | IEB</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ieb: {
+              blue: '#1e3a8a',
+              lightBlue: '#3b82f6',
+              accent: '#0d9488',
+              surface: '#f8fafc',
+              border: '#e2e8f0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Courier New', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #f8fafc; color: #1e293b; }
+    .card-clean {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .slot-box {
+      min-height: 44px;
+      transition: all 0.2s ease;
+    }
+    .badge-chip {
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s ease, background-color 0.2s ease;
+    }
+    .badge-chip:active { transform: scale(0.96); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between font-sans bg-slate-50 text-slate-800">
+
+  <!-- CABECERA COMPACTA PARA MÓVIL -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40 px-3 sm:px-6 py-2 shadow-xs">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-blue-800 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+          🏭
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-blue-800 uppercase tracking-wider block leading-none">IEB · ADE</span>
+          <h1 class="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
+            Práctica T5: Posfordismo y Modelos Productivos
+          </h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <span id="header-stage-pill" class="hidden text-[11px] font-bold font-mono bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.5 rounded-md">
+          Misión <span id="current-stage-num">1</span>/5
+        </span>
+
+        <div id="timer-badge" class="hidden font-mono text-[11px] bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-md flex items-center gap-1 font-bold">
+          <span>⏱️</span>
+          <span id="time-display">00:00</span>
+          <span class="text-[9px] text-slate-400 hidden sm:inline">/ 10m</span>
+        </div>
+
+        <div id="score-counter-badge" class="hidden font-mono text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-md font-semibold">
+          <span id="live-score">10.0</span><span class="text-[9px] text-amber-700">/10</span>
+        </div>
+      </div>
+    </div>
+    
+    <div id="progress-bar-container" class="hidden w-full bg-slate-100 h-1 mt-1.5 rounded-full overflow-hidden">
+      <div id="progress-bar-fill" class="bg-blue-600 h-full w-[20%] transition-all duration-300"></div>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="max-w-3xl mx-auto px-3 sm:px-6 py-4 w-full flex-grow flex flex-col justify-center">
+
+    <!-- PANTALLA 0: REGISTRO Y PRESENTACIÓN -->
+    <div id="view-onboarding" class="w-full max-w-xl mx-auto">
+      <div class="card-clean rounded-2xl p-5 sm:p-8 border border-slate-200">
+        
+        <div class="text-center mb-5">
+          <span class="px-2.5 py-0.5 text-[11px] font-semibold text-blue-800 bg-blue-50 border border-blue-200 rounded-full inline-block mb-2">
+            Actividad Práctica de Aula · 2º de ADE
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Misión Operaciones: De la Crisis Fordista al Toyotismo y Kalmar
+          </h2>
+          <p class="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed text-justify">
+            Asume la dirección estratégica en <strong>5 misiones interactivas</strong>: clasifica contratos y relaciones laborales, ordena el ciclo de mejora continua de Deming, gestiona el flujo de inventario *Just-in-Time* y audita la autonomía en la planta de Volvo.
+          </p>
+          <div class="mt-3 p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 text-left">
+            <strong>💡 Metodología:</strong> Resolverás enigmas mediante clasificación de tarjetas, diagnóstico de anomalías operativas y toma de decisiones. Puedes rectificar para avanzar, pero <strong>tu nota final premiará el primer intento</strong>.
+          </div>
+        </div>
+
+        <form id="form-registration" onsubmit="startSimulation(event)" class="space-y-3.5 bg-slate-50/80 p-4 sm:p-5 rounded-xl border border-slate-200">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre *</label>
+              <input type="text" id="reg-name" required placeholder="Ej. Carlos" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Apellidos *</label>
+              <input type="text" id="reg-surname" required placeholder="Ej. Gil Moreno" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Institucional IEB *</label>
+              <input type="email" id="reg-email" required placeholder="usuario@alumni-ieb.es" pattern=".+@alumni-ieb\.es$" title="Debe terminar en @alumni-ieb.es" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+              <p class="text-[10px] text-slate-500 mt-0.5">Obligatorio <span class="font-mono text-blue-700">@alumni-ieb.es</span></p>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">Grupo ADE *</label>
+              <select id="reg-group" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <option value="A">Grupo A</option>
+                <option value="B">Grupo B</option>
+                <option value="C">Grupo C</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm shadow-md transition transform active:scale-95 flex items-center justify-center gap-2">
+              <span>Iniciar Práctica (Duración: 8-10 min)</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </div>
+        </form>
+
+        <div class="mt-4 flex items-center justify-around text-[11px] text-slate-500 border-t border-slate-100 pt-3">
+          <span>⏱ Duración: 8-10 min</span>
+          <span>⚙️ 5 Misiones de Gestión</span>
+          <span>📊 Envío directo a Sheets</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MISIÓN 1: LA CRISIS DEL FORDISMO Y LA MATRIZ DE LIPIETZ -->
+    <div id="stage-1" class="hidden space-y-4">
+      <div class="card-clean p-4 rounded-xl border-l-4 border-l-blue-600 flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800">MISIÓN 1 DE 5</span>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Colapso del Modelo Rígido y la Bifurcación</h2>
+          <p class="text-xs text-slate-600">Saturación de demanda, crisis energética y respuestas organizativas.</p>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg px-2.5 py-1 text-center shrink-0">
+          <span class="text-[10px] font-mono text-blue-700 block uppercase">Estado</span>
+          <span id="lock-status-1" class="text-xs font-bold text-slate-800 font-mono">🔒 BLOQUEADO</span>
+        </div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl">
+        <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
+          🧩 Reto Interactivo: Matriz Comparativa de Modelos
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">
+          Toca o haz clic en las tarjetas de abajo para asignarlas a la columna correcta según el análisis de Alain Lipietz.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+          <div class="p-3 bg-amber-50/50 border border-amber-200 rounded-xl">
+            <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <span>📌</span> Neofordismo (Flexibilidad Numérica)
+            </h4>
+            <div id="drop-neofordismo" class="slot-box bg-white border-2 border-dashed border-amber-300 rounded-lg p-2 flex flex-wrap gap-1.5 min-h-[60px]">
+              <span class="text-[11px] text-slate-400 self-center mx-auto" id="ph-neo">Arrastra o pulsa tarjetas</span>
+            </div>
+          </div>
+
+          <div class="p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl">
+            <h4 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <span>🌱</span> Posfordismo (Implicación Negociada)
+            </h4>
+            <div id="drop-posfordismo" class="slot-box bg-white border-2 border-dashed border-emerald-300 rounded-lg p-2 flex flex-wrap gap-1.5 min-h-[60px]">
+              <span class="text-[11px] text-slate-400 self-center mx-auto" id="ph-pos">Arrastra o pulsa tarjetas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-100 rounded-xl">
+          <div class="text-[11px] font-semibold text-slate-600 mb-2">Tarjetas pendientes de clasificar:</div>
+          <div id="cards-bank-1" class="flex flex-wrap gap-2">
+            <button type="button" onclick="assignCard(1, 'c1', 'neo')" id="card-c1" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
+              Contratos flexibles y salarios bajos
+            </button>
+            <button type="button" onclick="assignCard(1, 'c2', 'pos')" id="card-c2" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
+              Redes horizontales y alta cualificación
+            </button>
+            <button type="button" onclick="assignCard(1, 'c3', 'neo')" id="card-c3" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
+              Integración vertical y control jerárquico
+            </button>
+            <button type="button" onclick="assignCard(1, 'c4', 'pos')" id="card-c4" class="badge-chip text-xs bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg font-medium text-slate-800 shadow-xs hover:border-blue-400">
+              Negociación colectiva alta y rígida
+            </button>
+          </div>
+        </div>
+
+        <div id="fb-stage-1" class="hidden mt-3 p-2.5 rounded-lg text-xs font-medium"></div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl border border-slate-200">
+        <span class="text-[10px] font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">Diagnóstico Causal</span>
+        <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
+          ¿Cuál fue el detonante estructural que provocó la quiebra del modelo fordista en la década de 1970?
+        </h4>
+        <div class="space-y-2">
+          <button onclick="handleSingleChoice(1, 'A')" id="btn-s1-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>A)</strong> La saturación de mercados de bienes homogéneos, la rigidez técnica de las cadenas ante la demanda diversificada y el shock petrolero de 1973.
+          </button>
+          <button onclick="handleSingleChoice(1, 'B')" id="btn-s1-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>B)</strong> La desaparición total de los sindicatos fabriles que provocó una caída voluntaria de los salarios industriales en toda Europa y EE.UU.
+          </button>
+          <button onclick="handleSingleChoice(1, 'C')" id="btn-s1-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>C)</strong> La prohibición gubernamental del uso de acero y maquinaria pesada en las plantas ensambladoras de automóviles.
+          </button>
+        </div>
+        <div id="fb-choice-1" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+      </div>
+
+      <div class="flex justify-end pt-1">
+        <button id="btn-next-stage-1" onclick="advanceStage(1)" disabled class="w-full sm:w-auto py-2.5 px-5 rounded-xl bg-slate-300 text-slate-500 font-semibold text-xs tracking-wider uppercase cursor-not-allowed transition flex items-center justify-center gap-2">
+          <span>Avanzar a Misión 2</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MISIÓN 2: EDWARDS DEMING Y EL CICLO PDCA -->
+    <div id="stage-2" class="hidden space-y-4">
+      <div class="card-clean p-4 rounded-xl border-l-4 border-l-indigo-600 flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">MISIÓN 2 DE 5</span>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Enigma de Edwards Deming en Japón (1950)</h2>
+          <p class="text-xs text-slate-600">Control Estadístico de Procesos (SPC) y la cultura de calidad.</p>
+        </div>
+        <div class="bg-indigo-50 border border-indigo-200 rounded-lg px-2.5 py-1 text-center shrink-0">
+          <span class="text-[10px] font-mono text-indigo-700 block uppercase">Estado</span>
+          <span id="lock-status-2" class="text-xs font-bold text-slate-800 font-mono">🔒 BLOQUEADO</span>
+        </div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl">
+        <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
+          🔄 Reto Interactivo: Ordenar la Rueda de Mejora Continua (PDCA)
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">
+          Deming transformó la industria japonesa enseñando que la calidad es un ciclo continuo. Haz clic en las fases en su orden exacto:
+        </p>
+
+        <div class="grid grid-cols-4 gap-2 mb-3 text-center">
+          <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
+            <span class="text-[10px] text-slate-400 block font-mono">Paso 1</span>
+            <span id="slot-pdca-1" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
+          </div>
+          <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
+            <span class="text-[10px] text-slate-400 block font-mono">Paso 2</span>
+            <span id="slot-pdca-2" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
+          </div>
+          <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
+            <span class="text-[10px] text-slate-400 block font-mono">Paso 3</span>
+            <span id="slot-pdca-3" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
+          </div>
+          <div class="p-2 border border-slate-200 rounded-lg bg-slate-50">
+            <span class="text-[10px] text-slate-400 block font-mono">Paso 4</span>
+            <span id="slot-pdca-4" class="text-xs font-bold text-slate-700 font-mono">¿?</span>
+          </div>
+        </div>
+
+        <div id="pdca-buttons" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button type="button" onclick="pickPDCA('Planificar (P)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">1. Planificar (P)</button>
+          <button type="button" onclick="pickPDCA('Hacer (D)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">2. Hacer (D)</button>
+          <button type="button" onclick="pickPDCA('Verificar (C)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">3. Verificar (C)</button>
+          <button type="button" onclick="pickPDCA('Actuar (A)')" class="p-2 bg-white border border-slate-300 rounded-lg text-xs font-semibold hover:border-indigo-500">4. Actuar (A)</button>
+        </div>
+        <button type="button" onclick="resetPDCA()" class="mt-2 text-[11px] text-slate-500 underline block">Reiniciar orden</button>
+
+        <div id="fb-stage-2" class="hidden mt-3 p-2.5 rounded-lg text-xs font-medium"></div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl border border-slate-200">
+        <span class="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Tesis Central de Deming</span>
+        <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
+          ¿Sobre quién depositó Deming la verdadera responsabilidad de los defectos en la producción industrial?
+        </h4>
+        <div class="space-y-2">
+          <button onclick="handleSingleChoice(2, 'A')" id="btn-s2-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>A)</strong> En la falta de disciplina y escasa fuerza física de los obreros de la línea de ensamblaje.
+          </button>
+          <button onclick="handleSingleChoice(2, 'B')" id="btn-s2-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>B)</strong> En la dirección y la gestión del sistema, causantes del 85-90% de los fallos por falta de métodos y liderazgo.
+          </button>
+          <button onclick="handleSingleChoice(2, 'C')" id="btn-s2-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>C)</strong> En las aduanas internacionales que importaban materias primas defectuosas sin avisar a los ingenieros.
+          </button>
+        </div>
+        <div id="fb-choice-2" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+      </div>
+
+      <div class="flex justify-end pt-1">
+        <button id="btn-next-stage-2" onclick="advanceStage(2)" disabled class="w-full sm:w-auto py-2.5 px-5 rounded-xl bg-slate-300 text-slate-500 font-semibold text-xs tracking-wider uppercase cursor-not-allowed transition flex items-center justify-center gap-2">
+          <span>Avanzar a Misión 3</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MISIÓN 3: EL TOYOTISMO, JUST-IN-TIME Y LOS 5 CEROS -->
+    <div id="stage-3" class="hidden space-y-4">
+      <div class="card-clean p-4 rounded-xl border-l-4 border-l-rose-500 flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-rose-100 text-rose-800">MISIÓN 3 DE 5</span>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Sistema Toyota (TPS) y la Revolución del JIT</h2>
+          <p class="text-xs text-slate-600">Taiichi Ohno, producción bajo demanda (*pull*) y la regla de los cinco ceros.</p>
+        </div>
+        <div class="bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1 text-center shrink-0">
+          <span class="text-[10px] font-mono text-rose-700 block uppercase">Estado</span>
+          <span id="lock-status-3" class="text-xs font-bold text-slate-800 font-mono">🔒 BLOQUEADO</span>
+        </div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl">
+        <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
+          🛑 Reto Interactivo: El Filtro de la Calidad Total (Los Cinco Ceros)
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">
+          El sistema Just-In-Time se fundamenta en la teoría de los <strong>Cinco Ceros</strong>. Señala cuál de las siguientes opciones NO forma parte de los 5 ceros del Toyotismo:
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <button type="button" onclick="checkFiveZeros('averias')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Averías</button>
+          <button type="button" onclick="checkFiveZeros('defectos')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Defectos</button>
+          <button type="button" onclick="checkFiveZeros('salarios')" class="p-2 border-2 border-dashed border-rose-300 rounded-lg text-xs font-bold text-rose-800 bg-rose-50/50 hover:bg-rose-100">Cero Salarios Mínimos</button>
+          <button type="button" onclick="checkFiveZeros('retrasos')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Retrasos</button>
+          <button type="button" onclick="checkFiveZeros('stock')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Stock</button>
+          <button type="button" onclick="checkFiveZeros('papel')" class="p-2 border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50">Cero Papel</button>
+        </div>
+
+        <div id="fb-stage-3" class="hidden mt-3 p-2.5 rounded-lg text-xs font-medium"></div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl border border-slate-200">
+        <span class="text-[10px] font-mono font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded">Lógica Operativa</span>
+        <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
+          ¿En qué se inspiró Taiichi Ohno para sustituir el modelo de empuje (*push*) por el de arrastre (*pull*) en Toyota?
+        </h4>
+        <div class="space-y-2">
+          <button onclick="handleSingleChoice(3, 'A')" id="btn-s3-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>A)</strong> En la observación de los supermercados estadounidenses, donde las estanterías solo se reponen a medida que el cliente retira el producto.
+          </button>
+          <button onclick="handleSingleChoice(3, 'B')" id="btn-s3-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>B)</strong> En las fábricas textiles soviéticas de producción masiva de uniformes militares sin variación de talla.
+          </button>
+          <button onclick="handleSingleChoice(3, 'C')" id="btn-s3-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>C)</strong> En las líneas de montaje de Henry Ford de 1914 con acumulación masiva de chasis en almacenes exteriores.
+          </button>
+        </div>
+        <div id="fb-choice-3" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+      </div>
+
+      <div class="flex justify-end pt-1">
+        <button id="btn-next-stage-3" onclick="advanceStage(3)" disabled class="w-full sm:w-auto py-2.5 px-5 rounded-xl bg-slate-300 text-slate-500 font-semibold text-xs tracking-wider uppercase cursor-not-allowed transition flex items-center justify-center gap-2">
+          <span>Avanzar a Misión 4</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MISIÓN 4: EL KALMARISMO (VOLVO) Y EL MODELO SUECO -->
+    <div id="stage-4" class="hidden space-y-4">
+      <div class="card-clean p-4 rounded-xl border-l-4 border-l-amber-500 flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-100 text-amber-800">MISIÓN 4 DE 5</span>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">El Kalmarismo Sueco: La Alternativa de Volvo</h2>
+          <p class="text-xs text-slate-600">Equipos autónomos, bienestar colectivo y crítica a la cadena tradicional.</p>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1 text-center shrink-0">
+          <span class="text-[10px] font-mono text-amber-700 block uppercase">Estado</span>
+          <span id="lock-status-4" class="text-xs font-bold text-slate-800 font-mono">🔒 BLOQUEADO</span>
+        </div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl">
+        <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
+          🇸🇪 Reto Interactivo: Auditoría a la Planta de Volvo en Kalmar (1974)
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">
+          ¿Cuáles son los tres pilares sociolaborales que distinguieron a la factoría de Kalmar frente a la cadena fordista?
+        </p>
+
+        <div class="space-y-2">
+          <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
+            <input type="checkbox" id="chk-k1" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
+            <span>Equipos autónomos de trabajo con rotación de funciones y mayor control sobre los ritmos.</span>
+          </label>
+          <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
+            <input type="checkbox" id="chk-k2" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
+            <span>Contratación temporal masiva con despidos libres sin intervención sindical.</span>
+          </label>
+          <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
+            <input type="checkbox" id="chk-k3" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
+            <span>Alta rigidez laboral, protección del empleo y diálogo continuo bajo marco socialdemócrata.</span>
+          </label>
+          <label class="flex items-start gap-2.5 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs cursor-pointer">
+            <input type="checkbox" id="chk-k4" onchange="checkKalmarPillars()" class="mt-0.5 rounded text-blue-600">
+            <span>Diseño de instalaciones enfocado en reducir la fatiga física y favorecer la comunicación social.</span>
+          </label>
+        </div>
+
+        <div id="fb-stage-4" class="hidden mt-3 p-2.5 rounded-lg text-xs font-medium"></div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl border border-slate-200">
+        <span class="text-[10px] font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Límites y Críticas</span>
+        <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
+          ¿Por qué sociólogos como Henri Mendras señalaron que el Kalmarismo era un modelo de difícil exportación a otros países?
+        </h4>
+        <div class="space-y-2">
+          <button onclick="handleSingleChoice(4, 'A')" id="btn-s4-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>A)</strong> Porque requería un contexto cultural y un pacto socialdemócrata muy específico de alta confianza mutua entre sindicatos, empresas y Estado.
+          </button>
+          <button onclick="handleSingleChoice(4, 'B')" id="btn-s4-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>B)</strong> Porque los automóviles fabricados con equipos autónomos eran incapaces de circular con lluvia o nieve.
+          </button>
+          <button onclick="handleSingleChoice(4, 'C')" id="btn-s4-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>C)</strong> Porque la Unión Europea aprobó una directiva que prohibía expresamente la rotación de puestos en el sector del motor.
+          </button>
+        </div>
+        <div id="fb-choice-4" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+      </div>
+
+      <div class="flex justify-end pt-1">
+        <button id="btn-next-stage-4" onclick="advanceStage(4)" disabled class="w-full sm:w-auto py-2.5 px-5 rounded-xl bg-slate-300 text-slate-500 font-semibold text-xs tracking-wider uppercase cursor-not-allowed transition flex items-center justify-center gap-2">
+          <span>Avanzar a Misión 5</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MISIÓN 5: SÍNTESIS COMPARADA Y DILEMA DIRECTIVO -->
+    <div id="stage-5" class="hidden space-y-4">
+      <div class="card-clean p-4 rounded-xl border-l-4 border-l-emerald-600 flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">MISIÓN 5 DE 5</span>
+          <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">Diagnóstico Final de Modelos Productivos</h2>
+          <p class="text-xs text-slate-600">Integración de los paradigmas industriales y su impacto sociológico.</p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-lg px-2.5 py-1 text-center shrink-0">
+          <span class="text-[10px] font-mono text-emerald-700 block uppercase">Estado</span>
+          <span id="lock-status-5" class="text-xs font-bold text-slate-800 font-mono">🔒 BLOQUEADO</span>
+        </div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl">
+        <h3 class="text-xs sm:text-sm font-bold text-slate-900 mb-1">
+          🎯 Reto Interactivo: Asignación de Caso a Paradigma Productivo
+        </h3>
+        <p class="text-xs text-slate-600 mb-3">
+          Relaciona cada descripción con su modelo exacto:
+        </p>
+
+        <div class="space-y-3">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-800 block mb-1.5">
+              1. "Planta automotriz en EE.UU. que ante crisis flexibiliza despidos, usa contratos precarios y mantiene mando vertical rígido."
+            </span>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" onclick="assignFinalModel(1, 'Fordismo')" id="btn-fin-1-Fordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Fordismo</button>
+              <button type="button" onclick="assignFinalModel(1, 'Neofordismo')" id="btn-fin-1-Neofordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white font-bold text-blue-800">Neofordismo</button>
+              <button type="button" onclick="assignFinalModel(1, 'Toyotismo')" id="btn-fin-1-Toyotismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Toyotismo</button>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-800 block mb-1.5">
+              2. "Fábrica nipona con producción build-to-order, alianzas de largo plazo con proveedores, círculos de calidad Kaizen y cero inventario."
+            </span>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" onclick="assignFinalModel(2, 'Kalmarismo')" id="btn-fin-2-Kalmarismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Kalmarismo</button>
+              <button type="button" onclick="assignFinalModel(2, 'Toyotismo')" id="btn-fin-2-Toyotismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white font-bold text-blue-800">Toyotismo</button>
+              <button type="button" onclick="assignFinalModel(2, 'Neofordismo')" id="btn-fin-2-Neofordismo" class="p-2 border border-slate-200 rounded-lg text-xs bg-white">Neofordismo</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="fb-stage-5" class="hidden mt-3 p-2.5 rounded-lg text-xs font-medium"></div>
+      </div>
+
+      <div class="card-clean p-4 rounded-xl border border-slate-200">
+        <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Cultura Monozukuri</span>
+        <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-2 mb-2 leading-snug">
+          En la sociología de la empresa japonesa, ¿qué significa la filosofía milenaria del <em>Monozukuri</em> aplicada a la manufactura?
+        </h4>
+        <div class="space-y-2">
+          <button onclick="handleSingleChoice(5, 'A')" id="btn-s5-A" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>A)</strong> La obligación legal de sustituir a los ingenieros por robots inteligentes para evitar la interacción humana en el taller.
+          </button>
+          <button onclick="handleSingleChoice(5, 'B')" id="btn-s5-B" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>B)</strong> La actitud sincera y el orgullo por el trabajo bien hecho, combinando destreza artesanal, cuidado por los detalles y mejora continua.
+          </button>
+          <button onclick="handleSingleChoice(5, 'C')" id="btn-s5-C" class="w-full p-2.5 rounded-lg border border-slate-200 text-xs text-left transition hover:bg-slate-50">
+            <strong>C)</strong> Una doctrina salarial que estipula que los directivos deben cobrar el mismo sueldo que el operario de menor rango.
+          </button>
+        </div>
+        <div id="fb-choice-5" class="hidden mt-2 p-2.5 rounded-lg text-xs"></div>
+      </div>
+
+      <div class="flex justify-end pt-1">
+        <button id="btn-finish-simulation" onclick="finishSimulation()" disabled class="w-full sm:w-auto py-2.5 px-5 rounded-xl bg-slate-300 text-slate-500 font-semibold text-xs tracking-wider uppercase cursor-not-allowed transition flex items-center justify-center gap-2">
+          <span>Completar Práctica y Calificar</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- PANTALLA FINAL: RESULTADOS, GOOGLE SHEETS Y CSV -->
+    <div id="view-final" class="hidden max-w-xl mx-auto w-full space-y-4">
+      <div class="card-clean p-5 sm:p-8 rounded-2xl text-center">
+        
+        <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center mx-auto text-2xl mb-3 shadow-xs">
+          📋
+        </div>
+
+        <span class="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-blue-800 bg-blue-50 border border-blue-200 rounded-full inline-block">
+          Práctica Completada
+        </span>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1.5">
+          Resumen de tu Práctica (Tema 5)
+        </h2>
+        <p class="text-xs text-slate-600 mt-1 max-w-sm mx-auto">
+          Resultados obtenidos a partir de tus primeros intentos de resolución.
+        </p>
+
+        <div class="my-4 p-4 rounded-xl bg-slate-50 border border-slate-200 max-w-sm mx-auto">
+          <div class="text-[10px] font-mono text-slate-500 uppercase tracking-wider font-semibold">Calificación Final (Primeros Intentos)</div>
+          <div class="text-5xl font-black text-slate-900 font-mono my-1" id="final-grade-display">
+            10.0 <span class="text-xl text-slate-400">/ 10</span>
+          </div>
+          <div id="final-badge-text" class="text-xs font-bold text-emerald-700 bg-emerald-100/70 py-0.5 px-2.5 rounded-full inline-block mb-2">
+            Excelente rendimiento
+          </div>
+          <div class="text-[11px] text-slate-500 font-mono flex items-center justify-between border-t border-slate-200 pt-2 px-1">
+            <span>⏱️ Tiempo: <strong id="final-duration-display" class="text-slate-800">08m 30s</strong></span>
+            <span>❌ Fallos: <strong id="final-errors-display" class="text-rose-600">0</strong></span>
+          </div>
+        </div>
+
+        <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-left text-xs text-slate-700 space-y-1.5 max-w-sm mx-auto mb-4">
+          <div class="flex justify-between border-b border-slate-100 pb-1">
+            <span class="text-slate-500">Estudiante:</span>
+            <span id="res-student-name" class="font-bold">-</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-100 pb-1">
+            <span class="text-slate-500">Email:</span>
+            <span id="res-student-email" class="font-mono font-medium">-</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-100 pb-1">
+            <span class="text-slate-500">Grupo:</span>
+            <span id="res-student-group" class="font-bold">-</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-100 pb-1">
+            <span class="text-slate-500">Aciertos 1er intento:</span>
+            <span id="res-hits-count" class="font-mono font-bold text-emerald-700">-</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">Identificador:</span>
+            <span id="res-session-id" class="font-mono text-blue-700 font-bold text-[11px]">-</span>
+          </div>
+        </div>
+
+        <div class="space-y-2.5 max-w-sm mx-auto">
+          <button id="btn-send-sheets" onclick="submitToGoogleSheets()" class="w-full py-3 px-4 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs tracking-wider uppercase shadow-sm transition transform active:scale-95 flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <span id="btn-send-text">1. Enviar Práctica a la Hoja del Profesor</span>
+          </button>
+
+          <button onclick="downloadCSVReceipt()" class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs tracking-wider uppercase transition flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>2. Descargar Justificante (.CSV)</span>
+          </button>
+
+          <div id="sheets-status" class="hidden p-2.5 rounded-lg text-xs font-mono"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-3 px-4 text-center text-[11px] text-slate-500 font-sans">
+    IEB Instituto de Estudios Bursátiles · Sociología de la Empresa (2º ADE)
+  </footer>
+
+  <script>
+    const state = {
+      student: { name: '', surname: '', email: '', group: 'A' },
+      sessionId: 'IEB-ADE-T5-' + Math.random().toString(36).substr(2, 8).toUpperCase(),
+      startTime: null,
+      endTime: null,
+      elapsedSeconds: 0,
+      timerInterval: null,
+
+      firstAttempts: {
+        dilemma1: null, dilemma2: null, dilemma3: null, dilemma4: null, dilemma5: null,
+        interactive1: null, interactive2: null, interactive3: null, interactive4: null, interactive5: null
+      },
+
+      resolved: {
+        d1: false, i1: false, d2: false, i2: false, d3: false,
+        i3: false, d4: false, i4: false, d5: false, i5: false
+      },
+
+      totalErrors: 0,
+      score: 10.0,
+      submitted: false,
+
+      pdcaSequence: [],
+      cardsStage1: { c1: false, c2: false, c3: false, c4: false },
+      finalModels: { m1: null, m2: null }
+    };
+
+    const CORRECT_DILEMMAS = { 1: 'A', 2: 'B', 3: 'A', 4: 'A', 5: 'B' };
+
+    // ENLACE CONECTADO DIRECTAMENTE A TU GOOGLE APPS SCRIPT
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby7gaBFLYHeKMMAyGB_btuVHtHgM4W4uz4sygPf4lgJLN_mbYB_UyAMPpYdiX9aDR7O/exec";
+
+    function startTimer() {
+      state.startTime = new Date();
+      state.timerInterval = setInterval(() => {
+        state.elapsedSeconds++;
+        const mins = Math.floor(state.elapsedSeconds / 60);
+        const secs = state.elapsedSeconds % 60;
+        document.getElementById('time-display').innerText = 
+          `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (state.timerInterval) {
+        clearInterval(state.timerInterval);
+        state.endTime = new Date();
+      }
+    }
+
+    function startSimulation(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const surname = document.getElementById('reg-surname').value.trim();
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
+      const group = document.getElementById('reg-group').value;
+
+      if (!email.endsWith('@alumni-ieb.es')) {
+        alert('Debes identificarte con tu correo oficial del IEB (@alumni-ieb.es).');
+        return;
+      }
+
+      state.student = { name, surname, email, group };
+
+      document.getElementById('header-stage-pill').classList.remove('hidden');
+      document.getElementById('progress-bar-container').classList.remove('hidden');
+      document.getElementById('timer-badge').classList.remove('hidden');
+      document.getElementById('score-counter-badge').classList.remove('hidden');
+
+      startTimer();
+
+      document.getElementById('view-onboarding').classList.add('hidden');
+      document.getElementById('stage-1').classList.remove('hidden');
+      calculateGrade();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function assignCard(stage, cardId, target) {
+      const cardEl = document.getElementById(`card-${cardId}`);
+      if (!cardEl) return;
+
+      const expected = (cardId === 'c1' || cardId === 'c3') ? 'neo' : 'pos';
+      const isCorrect = (target === expected);
+
+      if (state.firstAttempts.interactive1 === null) {
+        state.firstAttempts.interactive1 = isCorrect;
+        if (!isCorrect) state.totalErrors++;
+      }
+
+      if (isCorrect) {
+        const destBox = target === 'neo' ? document.getElementById('drop-neofordismo') : document.getElementById('drop-posfordismo');
+        const ph = target === 'neo' ? document.getElementById('ph-neo') : document.getElementById('ph-pos');
+        if (ph) ph.remove();
+
+        cardEl.className = "text-xs bg-emerald-100 text-emerald-900 border border-emerald-300 px-2 py-1 rounded font-medium cursor-default";
+        cardEl.onclick = null;
+        destBox.appendChild(cardEl);
+        state.cardsStage1[cardId] = true;
+
+        if (state.cardsStage1.c1 && state.cardsStage1.c2 && state.cardsStage1.c3 && state.cardsStage1.c4) {
+          state.resolved.i1 = true;
+          const fb = document.getElementById('fb-stage-1');
+          fb.classList.remove('hidden');
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
+          fb.innerText = "✓ ¡Excelente! Matriz de Lipietz clasificada con rigor.";
+          checkStageUnlock(1);
+        }
+      } else {
+        state.totalErrors++;
+        const fb = document.getElementById('fb-stage-1');
+        fb.classList.remove('hidden');
+        fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
+        fb.innerText = "✗ Esa tarjeta corresponde a la otra categoría. Revisa las características.";
+      }
+      calculateGrade();
+    }
+
+    function pickPDCA(stepName) {
+      if (state.pdcaSequence.length >= 4) return;
+      state.pdcaSequence.push(stepName);
+      const idx = state.pdcaSequence.length;
+      document.getElementById(`slot-pdca-${idx}`).innerText = stepName;
+
+      if (state.pdcaSequence.length === 4) {
+        const correctOrder = ['Planificar (P)', 'Hacer (D)', 'Verificar (C)', 'Actuar (A)'];
+        const isOk = JSON.stringify(state.pdcaSequence) === JSON.stringify(correctOrder);
+
+        if (state.firstAttempts.interactive2 === null) {
+          state.firstAttempts.interactive2 = isOk;
+          if (!isOk) state.totalErrors++;
+        }
+
+        const fb = document.getElementById('fb-stage-2');
+        fb.classList.remove('hidden');
+
+        if (isOk) {
+          state.resolved.i2 = true;
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
+          fb.innerText = "✓ ¡Secuencia PDCA correcta! Plan -> Do -> Check -> Act es la base de la mejora continua.";
+          checkStageUnlock(2);
+        } else {
+          state.totalErrors++;
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
+          fb.innerText = "✗ Orden incorrecto. Pulsa 'Reiniciar orden' para volver a intentarlo.";
+        }
+        calculateGrade();
+      }
+    }
+
+    function resetPDCA() {
+      state.pdcaSequence = [];
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`slot-pdca-${i}`).innerText = '¿?';
+      }
+      document.getElementById('fb-stage-2').classList.add('hidden');
+    }
+
+    function checkFiveZeros(choice) {
+      const isImpostor = (choice === 'salarios');
+      const fb = document.getElementById('fb-stage-3');
+      fb.classList.remove('hidden');
+
+      if (state.firstAttempts.interactive3 === null) {
+        state.firstAttempts.interactive3 = isImpostor;
+        if (!isImpostor) state.totalErrors++;
+      }
+
+      if (isImpostor) {
+        state.resolved.i3 = true;
+        fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
+        fb.innerHTML = "✓ ¡Correcto! 'Cero Salarios Mínimos' NO pertenece a los 5 ceros. Los 5 ceros son: cero averías, defectos, retrasos, stock y papel.";
+        checkStageUnlock(3);
+      } else {
+        state.totalErrors++;
+        fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
+        fb.innerText = "✗ Ese sí es uno de los 5 ceros del Toyotismo. Busca el elemento impostor.";
+      }
+      calculateGrade();
+    }
+
+    function checkKalmarPillars() {
+      const k1 = document.getElementById('chk-k1').checked;
+      const k2 = document.getElementById('chk-k2').checked;
+      const k3 = document.getElementById('chk-k3').checked;
+      const k4 = document.getElementById('chk-k4').checked;
+
+      const fb = document.getElementById('fb-stage-4');
+      const isCorrect = (k1 && !k2 && k3 && k4);
+
+      if (k1 && k3 && k4) {
+        if (state.firstAttempts.interactive4 === null) {
+          state.firstAttempts.interactive4 = isCorrect;
+          if (!isCorrect) state.totalErrors++;
+        }
+
+        fb.classList.remove('hidden');
+        if (!k2) {
+          state.resolved.i4 = true;
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
+          fb.innerText = "✓ ¡Diagnóstico perfecto! El modelo sueco priorizó equipos autónomos, alta protección laboral y diseño ergonómico.";
+          checkStageUnlock(4);
+        } else {
+          state.totalErrors++;
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
+          fb.innerText = "✗ Cuidado: La precariedad y los despidos libres pertenecen al neofordismo, no al modelo de Kalmar.";
+        }
+        calculateGrade();
+      }
+    }
+
+    function assignFinalModel(caseNum, modelChosen) {
+      state.finalModels['m' + caseNum] = modelChosen;
+
+      ['Fordismo', 'Neofordismo', 'Toyotismo', 'Kalmarismo'].forEach(m => {
+        const btn = document.getElementById(`btn-fin-${caseNum}-${m}`);
+        if (btn) btn.className = "p-2 border border-slate-200 rounded-lg text-xs bg-white";
+      });
+      const act = document.getElementById(`btn-fin-${caseNum}-${modelChosen}`);
+      if (act) act.className = "p-2 border-2 border-blue-600 rounded-lg text-xs bg-blue-50 font-bold text-blue-900";
+
+      const ok1 = (state.finalModels.m1 === 'Neofordismo');
+      const ok2 = (state.finalModels.m2 === 'Toyotismo');
+
+      if (state.finalModels.m1 && state.finalModels.m2) {
+        const bothOk = (ok1 && ok2);
+        if (state.firstAttempts.interactive5 === null) {
+          state.firstAttempts.interactive5 = bothOk;
+          if (!bothOk) state.totalErrors++;
+        }
+
+        const fb = document.getElementById('fb-stage-5');
+        fb.classList.remove('hidden');
+
+        if (bothOk) {
+          state.resolved.i5 = true;
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold";
+          fb.innerText = "✓ ¡Ambos casos identificados con éxito!";
+          checkStageUnlock(5);
+        } else {
+          state.totalErrors++;
+          fb.className = "mt-3 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-800";
+          fb.innerText = "✗ Uno de los modelos no coincide con el caso descrito. Revisa las opciones.";
+        }
+        calculateGrade();
+      }
+    }
+
+    function handleSingleChoice(stageNum, option) {
+      const isCorrect = (option === CORRECT_DILEMMAS[stageNum]);
+      const key = 'dilemma' + stageNum;
+
+      if (state.firstAttempts[key] === null) {
+        state.firstAttempts[key] = option;
+        if (!isCorrect) state.totalErrors++;
+      }
+
+      ['A', 'B', 'C'].forEach(opt => {
+        const b = document.getElementById(`btn-s${stageNum}-${opt}`);
+        if (b) b.classList.remove('bg-blue-50', 'border-blue-600', 'text-blue-900', 'font-semibold');
+      });
+
+      const btn = document.getElementById(`btn-s${stageNum}-${option}`);
+      if (btn) btn.classList.add('bg-blue-50', 'border-blue-600', 'text-blue-900', 'font-semibold');
+
+      const fb = document.getElementById(`fb-choice-${stageNum}`);
+      fb.classList.remove('hidden');
+
+      if (isCorrect) {
+        state.resolved['d' + stageNum] = true;
+        fb.className = "mt-2 p-2.5 rounded-lg text-xs bg-emerald-50 border border-emerald-200 text-emerald-900";
+        fb.innerHTML = "<strong class='text-emerald-700'>✓ ¡Correcto!</strong> Razonamiento sociológico exacto.";
+        checkStageUnlock(stageNum);
+      } else {
+        state.totalErrors++;
+        fb.className = "mt-2 p-2.5 rounded-lg text-xs bg-rose-50 border border-rose-200 text-rose-900";
+        fb.innerHTML = "<strong class='text-rose-700'>✗ Incorrecto.</strong> Esa opción no se corresponde con las tesis del modelo.";
+      }
+      calculateGrade();
+    }
+
+    function checkStageUnlock(stageNum) {
+      const isUnlocked = (state.resolved['d' + stageNum] && state.resolved['i' + stageNum]);
+      if (isUnlocked) {
+        const lock = document.getElementById(`lock-status-${stageNum}`);
+        if (lock) {
+          lock.innerText = "🔓 DESBLOQUEADO";
+          lock.className = "text-xs font-bold text-emerald-600 font-mono";
+        }
+
+        if (stageNum < 5) {
+          const nextBtn = document.getElementById(`btn-next-stage-${stageNum}`);
+          if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.className = "w-full sm:w-auto py-2.5 px-5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-xs tracking-wider uppercase transition shadow-md flex items-center justify-center gap-2 cursor-pointer";
+          }
+        } else {
+          const finishBtn = document.getElementById('btn-finish-simulation');
+          if (finishBtn) {
+            finishBtn.disabled = false;
+            finishBtn.className = "w-full sm:w-auto py-2.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs tracking-wider uppercase transition shadow-md flex items-center justify-center gap-2 cursor-pointer";
+          }
+        }
+      }
+    }
+
+    function advanceStage(currentStage) {
+      document.getElementById(`stage-${currentStage}`).classList.add('hidden');
+      const next = currentStage + 1;
+      document.getElementById(`stage-${next}`).classList.remove('hidden');
+
+      document.getElementById('current-stage-num').innerText = next;
+      document.getElementById('progress-bar-fill').style.width = (next / 5 * 100) + '%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function calculateGrade() {
+      let hits = 0;
+      let evaluated = 0;
+
+      for (let i = 1; i <= 5; i++) {
+        const dAtt = state.firstAttempts['dilemma' + i];
+        if (dAtt !== null) {
+          evaluated++;
+          if (dAtt === CORRECT_DILEMMAS[i]) hits++;
+        }
+        const iAtt = state.firstAttempts['interactive' + i];
+        if (iAtt !== null) {
+          evaluated++;
+          if (iAtt === true) hits++;
+        }
+      }
+
+      if (evaluated === 0) {
+        state.score = 10.0;
+      } else {
+        state.score = ((hits / 10) * 10.0).toFixed(1);
+      }
+      document.getElementById('live-score').innerText = state.score;
+    }
+
+    function finishSimulation() {
+      stopTimer();
+
+      document.getElementById('stage-5').classList.add('hidden');
+      document.getElementById('view-final').classList.remove('hidden');
+      document.getElementById('progress-bar-fill').style.width = '100%';
+
+      calculateGrade();
+      document.getElementById('final-grade-display').innerHTML = `${state.score} <span class="text-xl text-slate-400">/ 10</span>`;
+
+      const mins = Math.floor(state.elapsedSeconds / 60);
+      const secs = state.elapsedSeconds % 60;
+      document.getElementById('final-duration-display').innerText = `${mins}m ${secs}s`;
+      document.getElementById('final-errors-display').innerText = state.totalErrors;
+
+      let firstHits = 0;
+      for (let i = 1; i <= 5; i++) {
+        if (state.firstAttempts['dilemma' + i] === CORRECT_DILEMMAS[i]) firstHits++;
+        if (state.firstAttempts['interactive' + i] === true) firstHits++;
+      }
+      document.getElementById('res-hits-count').innerText = `${firstHits}/10 correctas al 1er intento`;
+
+      const badge = document.getElementById('final-badge-text');
+      if (state.score >= 9.0) {
+        badge.innerText = 'Sobresaliente';
+        badge.className = 'text-xs font-bold text-emerald-700 bg-emerald-100 py-0.5 px-2.5 rounded-full inline-block mb-2';
+      } else if (state.score >= 7.0) {
+        badge.innerText = 'Notable';
+        badge.className = 'text-xs font-bold text-blue-700 bg-blue-100 py-0.5 px-2.5 rounded-full inline-block mb-2';
+      } else if (state.score >= 5.0) {
+        badge.innerText = 'Aprobado';
+        badge.className = 'text-xs font-bold text-amber-700 bg-amber-100 py-0.5 px-2.5 rounded-full inline-block mb-2';
+      } else {
+        badge.innerText = 'Repaso recomendado';
+        badge.className = 'text-xs font-bold text-rose-700 bg-rose-100 py-0.5 px-2.5 rounded-full inline-block mb-2';
+      }
+
+      document.getElementById('res-student-name').innerText = `${state.student.name} ${state.student.surname}`;
+      document.getElementById('res-student-email').innerText = state.student.email;
+      document.getElementById('res-student-group').innerText = `Grupo ${state.student.group}`;
+      document.getElementById('res-session-id').innerText = state.sessionId;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function submitToGoogleSheets() {
+      if (state.submitted) {
+        alert('Esta práctica ya fue enviada correctamente al profesor.');
+        return;
+      }
+
+      const btn = document.getElementById('btn-send-sheets');
+      const btnText = document.getElementById('btn-send-text');
+      const statusBox = document.getElementById('sheets-status');
+
+      btn.disabled = true;
+      btnText.innerText = 'Enviando al registro...';
+      statusBox.classList.remove('hidden');
+      statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-blue-50 border border-blue-200 text-blue-800';
+      statusBox.innerText = 'Transmitiendo datos de la práctica a Google Sheets...';
+
+      let firstHits = 0;
+      for (let i = 1; i <= 5; i++) {
+        if (state.firstAttempts['dilemma' + i] === CORRECT_DILEMMAS[i]) firstHits++;
+        if (state.firstAttempts['interactive' + i] === true) firstHits++;
+      }
+
+      calculateGrade();
+      const notaValor = String(state.score);
+      const duracionStr = `${Math.floor(state.elapsedSeconds/60)}m ${state.elapsedSeconds%60}s`;
+
+      const payloadData = {
+        sessionId: state.sessionId,
+        idSesion: state.sessionId,
+        timestamp: new Date().toISOString(),
+        fecha: new Date().toLocaleString('es-ES'),
+        nombre: state.student.name,
+        apellidos: state.student.surname,
+        email: state.student.email,
+        grupo: state.student.group,
+
+        nota: notaValor,
+        notaFinal: notaValor,
+        nota_final: notaValor,
+        calificacion: notaValor,
+        score: notaValor,
+
+        aciertosPrimerIntento: firstHits,
+        aciertos: firstHits,
+        totalErrores: state.totalErrors,
+        errores: state.totalErrors,
+        duracion: duracionStr,
+        tiempo: duracionStr,
+
+        q1: state.firstAttempts.dilemma1 || '',
+        q2: state.firstAttempts.interactive1 ? 'OK' : 'FAIL',
+        q3: state.firstAttempts.dilemma2 || '',
+        q4: state.firstAttempts.interactive2 ? 'OK' : 'FAIL',
+        q5: state.firstAttempts.dilemma3 || '',
+        q6: state.firstAttempts.interactive3 ? 'OK' : 'FAIL',
+        q7: state.firstAttempts.dilemma4 || '',
+        q8: state.firstAttempts.interactive4 ? 'OK' : 'FAIL',
+        q9: state.firstAttempts.dilemma5 || '',
+        q10: state.firstAttempts.interactive5 ? 'OK' : 'FAIL'
+      };
+
+      try {
+        const blobPayload = new Blob([JSON.stringify(payloadData)], { type: 'text/plain;charset=utf-8' });
+
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: blobPayload
+        });
+
+        state.submitted = true;
+        btnText.innerText = '✓ Práctica Registrada';
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold text-xs tracking-wider uppercase cursor-default flex items-center justify-center gap-2';
+        statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-emerald-50 border border-emerald-200 text-emerald-800';
+        statusBox.innerText = `¡Correcto! Nota (${state.score}/10) y respuestas del Tema 5 enviadas al Google Sheet. Descarga tu comprobante CSV.`;
+      } catch (err) {
+        btn.disabled = false;
+        btnText.innerText = 'Reintentar Envío';
+        statusBox.className = 'p-2.5 rounded-lg text-xs font-mono bg-rose-50 border border-rose-200 text-rose-800';
+        statusBox.innerText = 'Aviso: No se pudo conectar de forma directa con Google Sheets. Descarga tu comprobante CSV.';
+      }
+    }
+
+    function downloadCSVReceipt() {
+      const headers = [
+        "ID_Sesion", "Fecha", "Nombre", "Apellidos", "Email", "Grupo",
+        "Nota_Final_Sobre_10", "Total_Errores", "Duracion_Segundos", "Duracion_Texto",
+        "Mision1_Dilema", "Mision1_Matriz", "Mision2_Dilema", "Mision2_PDCA",
+        "Mision3_Dilema", "Mision3_5Ceros", "Mision4_Dilema", "Mision4_Kalmar",
+        "Mision5_Dilema", "Mision5_Modelos"
+      ];
+
+      const row = [
+        `"${state.sessionId}"`,
+        `"${new Date().toLocaleString('es-ES')}"`,
+        `"${state.student.name}"`,
+        `"${state.student.surname}"`,
+        `"${state.student.email}"`,
+        `"${state.student.group}"`,
+        state.score,
+        state.totalErrors,
+        state.elapsedSeconds,
+        `"${Math.floor(state.elapsedSeconds/60)}m ${state.elapsedSeconds%60}s"`,
+        `"${state.firstAttempts.dilemma1}"`,
+        `"${state.firstAttempts.interactive1 ? 'ACIERTO' : 'FALLO'}"`,
+        `"${state.firstAttempts.dilemma2}"`,
+        `"${state.firstAttempts.interactive2 ? 'ACIERTO' : 'FALLO'}"`,
+        `"${state.firstAttempts.dilemma3}"`,
+        `"${state.firstAttempts.interactive3 ? 'ACIERTO' : 'FALLO'}"`,
+        `"${state.firstAttempts.dilemma4}"`,
+        `"${state.firstAttempts.interactive4 ? 'ACIERTO' : 'FALLO'}"`,
+        `"${state.firstAttempts.dilemma5}"`,
+        `"${state.firstAttempts.interactive5 ? 'ACIERTO' : 'FALLO'}"`
+      ];
+
+      const csvContent = "\uFEFF" + headers.join(",") + "\n" + row.join(",");
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `IEB_Practica_Tema5_${state.student.surname}_${state.student.name}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
